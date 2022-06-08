@@ -1,5 +1,6 @@
 package com.lunch.appfeeder.model.controller;
 
+import com.lunch.appfeeder.model.entity.DTO.MerchantForm;
 import com.lunch.appfeeder.model.entity.DTO.MerchantWithStatus;
 import com.lunch.appfeeder.model.entity.DTO.SignUpFormMerchant;
 import com.lunch.appfeeder.model.entity.merchant.Merchant;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 
 @Controller
@@ -80,20 +82,29 @@ public class MerchantController {
 //        return new ResponseEntity<>(merchantService.save(merchant,ms), HttpStatus.CREATED);
 //    }
     @PostMapping("/{id}")
-    public ResponseEntity<Merchant> saveOld(@PathVariable Long id,@ModelAttribute MerchantWithStatus merchantWithStatus){
+    public ResponseEntity<Merchant> saveOld(@PathVariable Long id,@ModelAttribute MerchantForm merchantForm){
         Merchant merchant = new Merchant();
         merchant.setId(id);
-        merchant.setAddress(merchantWithStatus.getAddress());
-        merchant.setEmail(merchantWithStatus.getEmail());
-        merchant.setName(merchantWithStatus.getName());
-        merchant.setPhone(merchantWithStatus.getPhone());
-        merchant.setSafeFoodLicense(merchantWithStatus.getSafeFoodLicense());
-        merchant.setUser(merchantWithStatus.getUser());
+        merchant.setAddress(merchantForm.getAddress());
+        merchant.setEmail(merchantForm.getEmail());
+        merchant.setName(merchantForm.getName());
+        merchant.setPhone(merchantForm.getPhone());
+        merchant.setUser(merchantForm.getUser());
+        merchant.setStatus(merchantForm.getStatus());
+        String licenseStringPath = merchantForm.getSafeFoodLicense().getOriginalFilename();
+        try {
+            FileCopyUtils.copy(merchantForm.getSafeFoodLicense().getBytes(), new File(uploadPath + licenseStringPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        merchant.setSafeFoodLicense(licenseStringPath);
         return new ResponseEntity<>(merchantService.save(merchant), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id){
+        Optional<Merchant> merchant = merchantService.findById(id);
         merchantService.remove(id);
+        appUserService.remove(merchant.get().getUser().getId());
         return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
 }
