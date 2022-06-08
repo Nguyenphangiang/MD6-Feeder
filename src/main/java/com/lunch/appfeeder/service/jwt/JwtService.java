@@ -1,7 +1,7 @@
 package com.lunch.appfeeder.service.jwt;
 
 
-import com.lunch.appfeeder.model.DTO.UserPrincipal;
+import com.lunch.appfeeder.model.entity.DTO.UserPrincipal;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

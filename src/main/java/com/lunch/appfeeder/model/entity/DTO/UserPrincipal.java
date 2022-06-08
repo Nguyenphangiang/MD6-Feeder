@@ -1,4 +1,4 @@
-package com.lunch.appfeeder.model.DTO;
+package com.lunch.appfeeder.model.entity.DTO;
 
 
 import com.lunch.appfeeder.model.login.AppRole;

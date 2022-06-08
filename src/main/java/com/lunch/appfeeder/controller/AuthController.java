@@ -1,12 +1,12 @@
 package com.lunch.appfeeder.controller;
 
 
-import com.lunch.appfeeder.model.DTO.ChangePassword;
-import com.lunch.appfeeder.model.DTO.JwtResponse;
-import com.lunch.appfeeder.model.DTO.SignUpForm;
+import com.lunch.appfeeder.model.entity.DTO.JwtResponse;
 
 import com.lunch.appfeeder.model.entity.Customer;
+import com.lunch.appfeeder.model.entity.DTO.SignUpFormCustomer;
 import com.lunch.appfeeder.model.login.AppUser;
+import com.lunch.appfeeder.repository.ICustomerRepository;
 
 import com.lunch.appfeeder.service.customer.ICustomerService;
 import com.lunch.appfeeder.service.jwt.JwtService;
@@ -22,8 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -58,7 +56,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt, currentUser.getId(), userDetails.getUsername(),userDetails.getAuthorities()));
     }
     @PostMapping("customer/register")
-    public ResponseEntity<AppUser> register(@RequestBody SignUpForm user) {
+    public ResponseEntity<AppUser> register(@RequestBody SignUpFormCustomer user) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
