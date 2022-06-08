@@ -1,5 +1,7 @@
 package com.lunch.appfeeder.model.entity;
 
+import com.lunch.appfeeder.model.dish.Dish;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,28 +10,46 @@ public class CartElement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long idCustomer;
-    private Long idDish;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+    @OneToOne
+    private Dish dish;
     private Long quantity;
     private String note ;
 
     public CartElement() {
     }
 
-    public CartElement(Long idCustomer, Long idDish, Long quantity, String note) {
-        this.idCustomer = idCustomer;
-        this.idDish = idDish;
+    public CartElement(Customer customer, Dish dish, Long quantity, String note) {
+        this.customer = customer;
+        this.dish = dish;
         this.quantity = quantity;
         this.note = note;
     }
 
-
-    public CartElement(Long id, Long idCustomer, Long idDish, Long quantity, String note) {
+    public CartElement(Long id, Customer customer, Dish dish, Long quantity, String note) {
         this.id = id;
-        this.idCustomer = idCustomer;
-        this.idDish = idDish;
+        this.customer = customer;
+        this.dish = dish;
         this.quantity = quantity;
         this.note = note;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setDish(Dish dish) {
+        this.dish = dish;
     }
 
     public Long getId() {
@@ -40,21 +60,6 @@ public class CartElement {
         this.id = id;
     }
 
-    public Long getIdCustomer() {
-        return idCustomer;
-    }
-
-    public void setIdCustomer(Long idCustomer) {
-        this.idCustomer = idCustomer;
-    }
-
-    public Long getIdDish() {
-        return idDish;
-    }
-
-    public void setIdDish(Long idDish) {
-        this.idDish = idDish;
-    }
 
     public Long getQuantity() {
         return quantity;
