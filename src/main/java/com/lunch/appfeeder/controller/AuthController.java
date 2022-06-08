@@ -6,7 +6,6 @@ import com.lunch.appfeeder.model.DTO.JwtResponse;
 import com.lunch.appfeeder.model.DTO.SignUpForm;
 
 import com.lunch.appfeeder.model.login.AppUser;
-import com.lunch.appfeeder.repository.ICustomerRepository;
 
 import com.lunch.appfeeder.service.jwt.JwtService;
 import com.lunch.appfeeder.service.user.IAppUserService;
