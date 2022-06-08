@@ -26,6 +26,28 @@ public class Merchant {
     @JoinColumn(name = "user_id")
     private AppUser user;
 
+    @OneToOne
+    @JoinColumn(name = "status")
+    private MerchantStatus status;
+
+    public MerchantStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MerchantStatus status) {
+        this.status = status;
+    }
+
+    public Merchant(String name, String safeFoodLicense, String email, String phone, String address, AppUser user, MerchantStatus status) {
+        this.name = name;
+        this.safeFoodLicense = safeFoodLicense;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.user = user;
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
@@ -85,16 +107,7 @@ public class Merchant {
     public Merchant() {
     }
 
-    public Merchant(String name, String safeFoodLicense, String email, String phone, String address, AppUser user) {
-        this.name = name;
-        this.safeFoodLicense = safeFoodLicense;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.user = user;
-    }
-
-    public Merchant(Long id, String name, String safeFoodLicense, String email, String phone, String address, AppUser user) {
+    public Merchant(Long id, String name, String safeFoodLicense, String email, String phone, String address, AppUser user, MerchantStatus status) {
         this.id = id;
         this.name = name;
         this.safeFoodLicense = safeFoodLicense;
@@ -102,5 +115,6 @@ public class Merchant {
         this.phone = phone;
         this.address = address;
         this.user = user;
+        this.status = status;
     }
 }

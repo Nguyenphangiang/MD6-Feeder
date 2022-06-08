@@ -10,6 +10,9 @@ public class MerchantStatus {
     private Long id;
     private String name;
 
+    public MerchantStatus(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;

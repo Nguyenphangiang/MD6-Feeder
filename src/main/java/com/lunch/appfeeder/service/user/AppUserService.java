@@ -61,6 +61,16 @@ public class AppUserService implements IAppUserService{
     }
 
     @Override
+    public AppUser saveMerchant(AppUser appUser) {
+        String password = appUser.getPassword();
+        String encodePassword = passwordEncoder.encode(password);
+        appUser.setPassword(encodePassword);
+        List<AppRole> roles = new ArrayList<>();
+        roles.add(new AppRole(3L, "ROLE_MERCHANT"));
+        appUser.setRoles(roles);
+        return userRepository.save(appUser);
+    }
+    @Override
     public void remove(Long id) {
         userRepository.deleteById(id);
     }
