@@ -17,6 +17,7 @@ public class AppUser {
     @JoinTable(name = "user_role")
     private List<AppRole> roles;
 
+
     public AppUser(String username, String password) {
         this.username = username;
         this.password = password;
@@ -61,6 +62,7 @@ public class AppUser {
     }
 
     public AppUser() {
+
     }
 
     public AppUser(Long id, String username, String password, List<AppRole> roles) {
