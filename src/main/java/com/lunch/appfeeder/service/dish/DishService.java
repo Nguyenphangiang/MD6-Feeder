@@ -1,6 +1,6 @@
 package com.lunch.appfeeder.service.dish;
 
-import com.lunch.appfeeder.model.Dish;
+import com.lunch.appfeeder.model.dish.Dish;
 import com.lunch.appfeeder.repository.IDishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
