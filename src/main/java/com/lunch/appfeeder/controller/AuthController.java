@@ -5,12 +5,15 @@ import com.lunch.appfeeder.model.DTO.ChangePassword;
 import com.lunch.appfeeder.model.DTO.JwtResponse;
 import com.lunch.appfeeder.model.DTO.SignUpForm;
 
+import com.lunch.appfeeder.model.entity.Customer;
 import com.lunch.appfeeder.model.login.AppUser;
 import com.lunch.appfeeder.repository.ICustomerRepository;
 
+import com.lunch.appfeeder.service.customer.ICustomerService;
 import com.lunch.appfeeder.service.jwt.JwtService;
 import com.lunch.appfeeder.service.user.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,8 +38,11 @@ public class AuthController {
     @Autowired
     private JwtService jwtService;
 
-//    @Autowired
-//    private ICustomerService customerService;
+    @Autowired
+    private ICustomerService customerService;
+
+    @Autowired
+    ApplicationEventPublisher eventPublisher;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -52,19 +58,18 @@ public class AuthController {
         AppUser currentUser = appUserService.findByUsername(appUser.getUsername());
         return ResponseEntity.ok(new JwtResponse(jwt, currentUser.getId(), userDetails.getUsername(),userDetails.getAuthorities()));
     }
-//    @PostMapping("/register")
-//    public ResponseEntity<AppUser> register(@RequestBody SignUpForm user) {
-//        if (!user.getPassword().equals(user.getConfirmPassword())) {
-//            System.out.println("password not match");
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        AppUser newUser = new AppUser(user.getUsername(), user.getPassword());
-//        appUserService.save(newUser);
-//        Customer customer = new Customer(user.getEmail(),user.getFullName(),
-//                 newUser);
-//        customerService.save(customer);
-//        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-//    }
+    @PostMapping("customer/register")
+    public ResponseEntity<AppUser> register(@RequestBody SignUpForm user) {
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        AppUser newUser = new AppUser(user.getUsername(), user.getPassword());
+        appUserService.save(newUser);
+        Customer customer = new Customer(user.getName(),user.getEmail(),user.getPhone(),user.getAddress(),newUser);
+        customerService.save(customer);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
 //    @GetMapping("/admin")
 //    public ResponseEntity<AppUser> admin() {
 //      return new ResponseEntity<>(HttpStatus.OK);
