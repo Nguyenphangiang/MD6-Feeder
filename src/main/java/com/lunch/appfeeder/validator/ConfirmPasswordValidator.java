@@ -1,7 +1,7 @@
 package com.lunch.appfeeder.validator;
 
 
-import com.lunch.appfeeder.model.DTO.PasswordForm;
+import com.lunch.appfeeder.model.entity.DTO.PasswordForm;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

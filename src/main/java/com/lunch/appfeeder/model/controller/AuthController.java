@@ -1,17 +1,14 @@
-package com.lunch.appfeeder.controller;
+package com.lunch.appfeeder.model.controller;
 
 
-import com.lunch.appfeeder.model.DTO.ChangePassword;
-import com.lunch.appfeeder.model.DTO.JwtResponse;
-import com.lunch.appfeeder.model.DTO.SignUpForm;
+import com.lunch.appfeeder.model.entity.DTO.JwtResponse;
 
 import com.lunch.appfeeder.model.login.AppUser;
-import com.lunch.appfeeder.repository.ICustomerRepository;
+//import com.lunch.appfeeder.repository.ICustomerRepository;
 
 import com.lunch.appfeeder.service.jwt.JwtService;
 import com.lunch.appfeeder.service.user.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,8 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")

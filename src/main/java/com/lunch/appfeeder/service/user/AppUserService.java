@@ -1,7 +1,7 @@
 package com.lunch.appfeeder.service.user;
 
 
-import com.lunch.appfeeder.model.DTO.UserPrincipal;
+import com.lunch.appfeeder.model.entity.DTO.UserPrincipal;
 import com.lunch.appfeeder.model.login.AppRole;
 import com.lunch.appfeeder.model.login.AppUser;
 import com.lunch.appfeeder.repository.IUserRepository;
