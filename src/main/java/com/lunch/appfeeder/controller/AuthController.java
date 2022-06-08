@@ -70,10 +70,14 @@ public class AuthController {
         customerService.save(customer);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
-//    @GetMapping("/admin")
-//    public ResponseEntity<AppUser> admin() {
-//      return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @GetMapping("/admin")
+    public ResponseEntity<Iterable<AppUser>> admin() {
+      return new ResponseEntity<>(appUserService.findAll(),HttpStatus.OK);
+    }
+    @GetMapping("/user")
+    public ResponseEntity<AppUser> userHello() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 //    @PostMapping("/changePassword/{id}")
 //    public ResponseEntity<AppUser> changePassword(@PathVariable Long id, @RequestBody ChangePassword changePassword) {
