@@ -1,7 +1,7 @@
 package com.lunch.appfeeder.service.user;
 
 
-import com.lunch.appfeeder.model.DTO.UserPrincipal;
+import com.lunch.appfeeder.model.entity.DTO.UserPrincipal;
 import com.lunch.appfeeder.model.login.AppRole;
 import com.lunch.appfeeder.model.login.AppUser;
 import com.lunch.appfeeder.repository.IUserRepository;
@@ -60,6 +60,16 @@ public class AppUserService implements IAppUserService{
         return userRepository.save(appUser);
     }
 
+    @Override
+    public AppUser saveMerchant(AppUser appUser) {
+        String password = appUser.getPassword();
+        String encodePassword = passwordEncoder.encode(password);
+        appUser.setPassword(encodePassword);
+        List<AppRole> roles = new ArrayList<>();
+        roles.add(new AppRole(3L, "ROLE_MERCHANT"));
+        appUser.setRoles(roles);
+        return userRepository.save(appUser);
+    }
     @Override
     public void remove(Long id) {
         userRepository.deleteById(id);

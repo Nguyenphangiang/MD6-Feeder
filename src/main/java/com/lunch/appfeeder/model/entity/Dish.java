@@ -1,5 +1,7 @@
 package com.lunch.appfeeder.model.entity;
 
+import com.lunch.appfeeder.model.entity.merchant.Merchant;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,28 +16,30 @@ public class Dish {
     private String description;
     private Long price;
     private String status;
-    private Long merchant_id;
+    @ManyToOne
+    @JoinColumn (name = "merchant_id")
+    private Merchant merchant;
 
     public Dish() {
     }
 
-    public Dish(String image, String name, String description, Long price, String status, Long merchant_id) {
+    public Dish(String image, String name, String description, Long price, String status, Merchant merchant) {
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
-    public Dish(Long id, String image, String name, String description, Long price, String status, Long merchant_id) {
+    public Dish(Long id, String image, String name, String description, Long price, String status, Merchant merchant) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
     public Long getId() {
@@ -86,11 +90,11 @@ public class Dish {
         this.status = status;
     }
 
-    public Long getMerchant_id() {
-        return merchant_id;
+    public Merchant getMerchant() {
+        return merchant;
     }
 
-    public void setMerchant_id(Long merchant_id) {
-        this.merchant_id = merchant_id;
+    public void setMerchant_id(Merchant merchant) {
+        this.merchant = merchant;
     }
 }

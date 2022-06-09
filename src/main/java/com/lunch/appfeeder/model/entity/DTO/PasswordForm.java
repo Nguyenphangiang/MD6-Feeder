@@ -1,7 +1,15 @@
-package com.lunch.appfeeder.model.DTO;
+package com.lunch.appfeeder.model.entity.DTO;
 
-public class ChangePassword {
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+public class PasswordForm {
+    @NotEmpty
+    @Size(min = 5, max = 12)
     private String password;
+
+    @NotEmpty
+    @Size(min = 5, max = 12)
     private String confirmPassword;
 
     public String getPassword() {
@@ -20,11 +28,11 @@ public class ChangePassword {
         this.confirmPassword = confirmPassword;
     }
 
-    public ChangePassword(String password, String confirmPassword) {
+    public PasswordForm(String password, String confirmPassword) {
         this.password = password;
         this.confirmPassword = confirmPassword;
     }
 
-    public ChangePassword() {
+    public PasswordForm() {
     }
 }

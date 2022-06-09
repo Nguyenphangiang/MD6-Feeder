@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IDishRepository extends CrudRepository<Dish, Long> {
+    Iterable<Dish> findAllByMerchant_Id(Long merchantId);
 }
