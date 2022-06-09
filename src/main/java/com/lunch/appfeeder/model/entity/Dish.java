@@ -1,20 +1,25 @@
-package com.lunch.appfeeder.model.dish;
+package com.lunch.appfeeder.model.entity;
 
-import org.springframework.web.multipart.MultipartFile;
+import javax.persistence.*;
 
-public class DishForm {
+@Entity
+@Table( name = "dishes")
+public class Dish {
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+
     private Long id;
-    private MultipartFile image;
+    private String image;
     private String name;
     private String description;
     private Long price;
     private String status;
     private Long merchant_id;
 
-    public DishForm() {
+    public Dish() {
     }
 
-    public DishForm(MultipartFile image, String name, String description, Long price, String status, Long merchant_id) {
+    public Dish(String image, String name, String description, Long price, String status, Long merchant_id) {
         this.image = image;
         this.name = name;
         this.description = description;
@@ -23,7 +28,7 @@ public class DishForm {
         this.merchant_id = merchant_id;
     }
 
-    public DishForm(Long id, MultipartFile image, String name, String description, Long price, String status, Long merchant_id) {
+    public Dish(Long id, String image, String name, String description, Long price, String status, Long merchant_id) {
         this.id = id;
         this.image = image;
         this.name = name;
@@ -41,11 +46,11 @@ public class DishForm {
         this.id = id;
     }
 
-    public MultipartFile getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

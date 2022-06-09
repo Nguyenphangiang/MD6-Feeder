@@ -1,7 +1,7 @@
 package com.lunch.appfeeder.controller;
 
-import com.lunch.appfeeder.model.dish.Dish;
-import com.lunch.appfeeder.model.dish.DishForm;
+import com.lunch.appfeeder.model.entity.Dish;
+import com.lunch.appfeeder.model.DTO.DishForm;
 import com.lunch.appfeeder.service.dish.IDishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
