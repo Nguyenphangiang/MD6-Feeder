@@ -22,6 +22,7 @@ import java.util.Optional;
 
 
 @Controller
+@CrossOrigin("*")
 @RequestMapping("/merchant")
 public class MerchantController {
 
