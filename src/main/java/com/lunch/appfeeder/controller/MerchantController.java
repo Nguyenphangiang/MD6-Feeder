@@ -92,13 +92,17 @@ public class MerchantController {
         merchant.setPhone(merchantForm.getPhone());
         merchant.setUser(merchantForm.getUser());
         merchant.setStatus(merchantForm.getStatus());
-        String licenseStringPath = merchantForm.getSafeFoodLicense().getOriginalFilename();
-        try {
-            FileCopyUtils.copy(merchantForm.getSafeFoodLicense().getBytes(), new File(uploadPath + licenseStringPath));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(merchantForm.getSafeFoodLicense()!=null){
+            String licenseStringPath = merchantForm.getSafeFoodLicense().getOriginalFilename();
+            try {
+                FileCopyUtils.copy(merchantForm.getSafeFoodLicense().getBytes(), new File(uploadPath + licenseStringPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            merchant.setSafeFoodLicense(licenseStringPath);
+        }else{
+            merchant.setSafeFoodLicense(merchantService.findById(id).get().getSafeFoodLicense());
         }
-        merchant.setSafeFoodLicense(licenseStringPath);
         return new ResponseEntity<>(merchantService.save(merchant), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
