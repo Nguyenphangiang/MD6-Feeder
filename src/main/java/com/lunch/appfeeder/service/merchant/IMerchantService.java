@@ -6,4 +6,5 @@ import com.lunch.appfeeder.service.IGeneralService;
 
 public interface IMerchantService extends IGeneralService<Merchant> {
      Merchant setMerchantStatus(Merchant merchant, MerchantStatus merchantStatus);
+     Iterable<Merchant> findMerchantByNameContaining(String name);
 }
