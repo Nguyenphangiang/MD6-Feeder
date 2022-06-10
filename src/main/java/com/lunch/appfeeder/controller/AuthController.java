@@ -67,10 +67,17 @@ public class AuthController {
         customerService.save(customer);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
-//    @GetMapping("/admin")
-//    public ResponseEntity<AppUser> admin() {
-//      return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @PutMapping("customer/update/{id}")
+    public ResponseEntity<Customer> updateCustomerInformation(@RequestBody SignUpFormCustomer customer, @PathVariable Long id) {
+        Customer oldCustomer = customerService.findById(id).get();
+        Customer newCustomer = new Customer(id, customer.getName(),customer.getEmail(),customer.getPhone(),customer.getAddress(),oldCustomer.getAppUser());
+        customerService.save(newCustomer);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("customer/detail/{id}")
+    public ResponseEntity<Customer> showCustomerDetail(@PathVariable Long id) {
+        return new ResponseEntity<>(customerService.findById(id).get(), HttpStatus.OK);
+    }
 
 //    @PostMapping("/changePassword/{id}")
 //    public ResponseEntity<AppUser> changePassword(@PathVariable Long id, @RequestBody ChangePassword changePassword) {

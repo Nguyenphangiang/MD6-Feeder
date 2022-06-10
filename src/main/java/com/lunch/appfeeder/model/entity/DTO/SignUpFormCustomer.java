@@ -92,9 +92,6 @@ public class SignUpFormCustomer {
 
 
 
-
-
-
     public PasswordForm getPasswordForm() {
         return passwordForm;
     }
@@ -103,5 +100,13 @@ public class SignUpFormCustomer {
         this.passwordForm = passwordForm;
     }
 
+    public SignUpFormCustomer() {
+    }
 
+    public SignUpFormCustomer(String email, String name, String phone, String address) {
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+    }
 }
