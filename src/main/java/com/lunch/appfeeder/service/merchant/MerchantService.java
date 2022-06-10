@@ -34,6 +34,11 @@ public class MerchantService implements IMerchantService {
     }
 
     @Override
+    public Iterable<Merchant> findMerchantByNameContaining(String name) {
+        return merchantRepository.findMerchantByNameContaining(name);
+    }
+
+    @Override
     public void remove(Long id) {
 //        Merchant merchant = merchantRepository.getById(id);
 //        List<Merchant_MerchantStatus> merchantStatuses = merchantLinkStatus.findMerchant_MerchantStatusByMerchant(merchant);

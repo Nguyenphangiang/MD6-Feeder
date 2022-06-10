@@ -20,6 +20,7 @@ public class Customer {
     private String address;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private AppUser appUser;
 
 

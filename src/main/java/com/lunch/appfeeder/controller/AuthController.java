@@ -5,11 +5,13 @@ import com.lunch.appfeeder.model.entity.DTO.JwtResponse;
 
 import com.lunch.appfeeder.model.entity.Customer;
 import com.lunch.appfeeder.model.entity.DTO.SignUpFormCustomer;
+import com.lunch.appfeeder.model.entity.merchant.Merchant;
 import com.lunch.appfeeder.model.login.AppUser;
 import com.lunch.appfeeder.repository.ICustomerRepository;
 
 import com.lunch.appfeeder.service.customer.ICustomerService;
 import com.lunch.appfeeder.service.jwt.JwtService;
+import com.lunch.appfeeder.service.merchant.IMerchantService;
 import com.lunch.appfeeder.service.user.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -42,6 +44,9 @@ public class AuthController {
     ApplicationEventPublisher eventPublisher;
 
     @Autowired
+    private IMerchantService merchantService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
@@ -69,16 +74,20 @@ public class AuthController {
     }
     @PutMapping("customer/update/{id}")
     public ResponseEntity<Customer> updateCustomerInformation(@RequestBody SignUpFormCustomer customer, @PathVariable Long id) {
-        Customer oldCustomer = customerService.findById(id).get();
-        Customer newCustomer = new Customer(id, customer.getName(),customer.getEmail(),customer.getPhone(),customer.getAddress(),oldCustomer.getAppUser());
+        Customer oldCustomer = customerService.findCustomerByAppUser_Id(id);
+        Customer newCustomer = new Customer(oldCustomer.getId(), customer.getName(),customer.getEmail(),customer.getPhone(),customer.getAddress(),oldCustomer.getAppUser());
         customerService.save(newCustomer);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("customer/detail/{id}")
     public ResponseEntity<Customer> showCustomerDetail(@PathVariable Long id) {
-        return new ResponseEntity<>(customerService.findById(id).get(), HttpStatus.OK);
+        return new ResponseEntity<>(customerService.findCustomerByAppUser_Id(id), HttpStatus.OK);
     }
-
+    @GetMapping("customer/findMerchant/{name}")
+    public ResponseEntity<Iterable<Merchant>> findMerchantByName(@PathVariable String name) {
+        Iterable<Merchant> merchants = merchantService.findMerchantByNameContaining(name);
+        return new ResponseEntity<>(merchantService.findMerchantByNameContaining(name), HttpStatus.OK);
+    }
 //    @PostMapping("/changePassword/{id}")
 //    public ResponseEntity<AppUser> changePassword(@PathVariable Long id, @RequestBody ChangePassword changePassword) {
 //        Optional<AppUser> appUser = this.appUserService.findById(id);
