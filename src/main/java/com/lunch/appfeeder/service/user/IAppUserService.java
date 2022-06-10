@@ -11,4 +11,7 @@ public interface IAppUserService extends IGeneralService<AppUser>, UserDetailsSe
     Iterable<AppUser> findAll();
 
     AppUser saveAdmin(AppUser appUser);
+    AppUser saveMerchant(AppUser appUser);
+
+
 }
