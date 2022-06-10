@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,8 +34,14 @@ public class DishController {
     private IMerchantService merchantService;
 
     @GetMapping("/merchant/{merchantId}")
-    public ResponseEntity<Iterable<Dish>> getAllDish(@PathVariable Long merchantId){
+    public ResponseEntity<Iterable<Dish>> getAllDishByMerchant(@PathVariable Long merchantId){
         Iterable<Dish> dishes = dishService.findDishByMerchant(merchantId);
+        return new ResponseEntity<>(dishes, HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Iterable<Dish>> getAllDish(){
+        Iterable<Dish> dishes = dishService.findAll();
         return new ResponseEntity<>(dishes, HttpStatus.OK);
     }
 
@@ -92,6 +100,5 @@ public class DishController {
         dishService.save(existDish);
         return new ResponseEntity<>(existDish, HttpStatus.OK);
     }
-
 
 }

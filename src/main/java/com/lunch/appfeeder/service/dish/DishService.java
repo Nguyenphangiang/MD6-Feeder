@@ -36,4 +36,5 @@ public class DishService implements IDishService{
     public Iterable<Dish> findDishByMerchant(Long merchantId) {
         return dishRepository.findAllByMerchant_Id(merchantId);
     }
+
 }
