@@ -1,36 +1,45 @@
-package com.lunch.appfeeder.model.dish;
+package com.lunch.appfeeder.model.entity;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.lunch.appfeeder.model.entity.merchant.Merchant;
 
-public class DishForm {
+import javax.persistence.*;
+
+@Entity
+@Table( name = "dishes")
+public class Dish {
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+
     private Long id;
-    private MultipartFile image;
+    private String image;
     private String name;
     private String description;
     private Long price;
     private String status;
-    private Long merchant_id;
+    @ManyToOne
+    @JoinColumn (name = "merchant_id")
+    private Merchant merchant;
 
-    public DishForm() {
+    public Dish() {
     }
 
-    public DishForm(MultipartFile image, String name, String description, Long price, String status, Long merchant_id) {
+    public Dish(String image, String name, String description, Long price, String status, Merchant merchant) {
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
-    public DishForm(Long id, MultipartFile image, String name, String description, Long price, String status, Long merchant_id) {
+    public Dish(Long id, String image, String name, String description, Long price, String status, Merchant merchant) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
     public Long getId() {
@@ -41,11 +50,11 @@ public class DishForm {
         this.id = id;
     }
 
-    public MultipartFile getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -81,11 +90,11 @@ public class DishForm {
         this.status = status;
     }
 
-    public Long getMerchant_id() {
-        return merchant_id;
+    public Merchant getMerchant() {
+        return merchant;
     }
 
-    public void setMerchant_id(Long merchant_id) {
-        this.merchant_id = merchant_id;
+    public void setMerchant_id(Merchant merchant) {
+        this.merchant = merchant;
     }
 }

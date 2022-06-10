@@ -1,6 +1,6 @@
 package com.lunch.appfeeder.service.dish;
 
-import com.lunch.appfeeder.model.dish.Dish;
+import com.lunch.appfeeder.model.entity.Dish;
 import com.lunch.appfeeder.repository.IDishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,4 +31,10 @@ public class DishService implements IDishService{
     public void remove(Long id) {
         dishRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Dish> findDishByMerchant(Long merchantId) {
+        return dishRepository.findAllByMerchant_Id(merchantId);
+    }
+
 }
