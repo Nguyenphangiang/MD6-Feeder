@@ -1,41 +1,37 @@
-package com.lunch.appfeeder.model.dish;
+package com.lunch.appfeeder.model.entity.DTO;
 
-import javax.persistence.*;
+import com.lunch.appfeeder.model.entity.merchant.Merchant;
+import org.springframework.web.multipart.MultipartFile;
 
-@Entity
-@Table( name = "dishes")
-public class Dish {
-    @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-
+public class DishForm {
     private Long id;
-    private String image;
+    private MultipartFile image;
     private String name;
     private String description;
     private Long price;
     private String status;
-    private Long merchant_id;
+    private Merchant merchant;
 
-    public Dish() {
+    public DishForm() {
     }
 
-    public Dish(String image, String name, String description, Long price, String status, Long merchant_id) {
+    public DishForm(MultipartFile image, String name, String description, Long price, String status, Merchant merchant) {
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
-    public Dish(Long id, String image, String name, String description, Long price, String status, Long merchant_id) {
+    public DishForm(Long id, MultipartFile image, String name, String description, Long price, String status, Merchant merchant) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
     public Long getId() {
@@ -46,11 +42,11 @@ public class Dish {
         this.id = id;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 
@@ -86,11 +82,11 @@ public class Dish {
         this.status = status;
     }
 
-    public Long getMerchant_id() {
-        return merchant_id;
+    public Merchant getMerchant() {
+        return merchant;
     }
 
     public void setMerchant_id(Long merchant_id) {
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 }

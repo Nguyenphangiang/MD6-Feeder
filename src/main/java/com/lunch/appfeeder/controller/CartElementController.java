@@ -1,8 +1,9 @@
 package com.lunch.appfeeder.controller;
 
-import com.lunch.appfeeder.model.dish.Dish;
+import com.lunch.appfeeder.model.entity.Dish;
 import com.lunch.appfeeder.model.entity.CartElement;
 import com.lunch.appfeeder.model.entity.Customer;
+import com.lunch.appfeeder.model.entity.Dish;
 import com.lunch.appfeeder.service.cartelement.ICartElementService;
 import com.lunch.appfeeder.service.customer.ICustomerService;
 import com.lunch.appfeeder.service.dish.IDishService;

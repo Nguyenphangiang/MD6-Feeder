@@ -1,6 +1,6 @@
 package com.lunch.appfeeder.model.entity;
 
-import com.lunch.appfeeder.model.dish.Dish;
+import com.lunch.appfeeder.model.entity.Dish;
 
 import javax.persistence.*;
 
