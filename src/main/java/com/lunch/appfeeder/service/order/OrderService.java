@@ -1,6 +1,6 @@
 package com.lunch.appfeeder.service.order;
 
-import com.lunch.appfeeder.model.order.Order;
+import com.lunch.appfeeder.model.entity.Order;
 import com.lunch.appfeeder.repository.orderRepository.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

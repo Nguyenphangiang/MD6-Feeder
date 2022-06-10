@@ -1,7 +1,4 @@
-package com.lunch.appfeeder.model.order;
-
-import com.lunch.appfeeder.model.dish.Dish;
-import com.lunch.appfeeder.model.entity.Customer;
+package com.lunch.appfeeder.model.entity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,9 +17,9 @@ public class Order {
     private Customer customer;
     private Date orderTime;
 
-    @OneToMany
-    @JoinColumn
-    private List<Dish> dishList;
+    @OneToOne
+    @JoinColumn (name = "dish_id")
+    private Dish dish;
     private int quantity;
     private String note;
     private int status;
@@ -30,20 +27,20 @@ public class Order {
     public Order() {
     }
 
-    public Order(Customer customer, Date orderTime, List<Dish> dishList, int quantity, String note, int status) {
+    public Order(Customer customer, Date orderTime, Dish dish, int quantity, String note, int status) {
         this.customer = customer;
         this.orderTime = orderTime;
-        this.dishList = dishList;
+        this.dish = dish;
         this.quantity = quantity;
         this.note = note;
         this.status = status;
     }
 
-    public Order(Long id, Customer customer, Date orderTime, List<Dish> dishList, int quantity, String note, int status) {
+    public Order(Long id, Customer customer, Date orderTime, Dish dish, int quantity, String note, int status) {
         this.id = id;
         this.customer = customer;
         this.orderTime = orderTime;
-        this.dishList = dishList;
+        this.dish = dish;
         this.quantity = quantity;
         this.note = note;
         this.status = status;
@@ -73,12 +70,12 @@ public class Order {
         this.orderTime = orderTime;
     }
 
-    public List<Dish> getDishList() {
-        return dishList;
+    public Dish getDish() {
+        return dish;
     }
 
-    public void setDishList(List<Dish> dishList) {
-        this.dishList = dishList;
+    public void setDish(Dish dish) {
+        this.dish = dish;
     }
 
     public int getQuantity() {
