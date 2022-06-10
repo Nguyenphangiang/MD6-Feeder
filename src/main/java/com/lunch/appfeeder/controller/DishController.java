@@ -2,8 +2,10 @@ package com.lunch.appfeeder.controller;
 
 import com.lunch.appfeeder.model.entity.Dish;
 import com.lunch.appfeeder.model.entity.DTO.DishForm;
+import com.lunch.appfeeder.model.entity.DishStatus;
 import com.lunch.appfeeder.model.entity.merchant.Merchant;
 import com.lunch.appfeeder.service.dish.IDishService;
+import com.lunch.appfeeder.service.dishStatus.IDishStatusService;
 import com.lunch.appfeeder.service.merchant.IMerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -26,6 +28,9 @@ public class DishController {
 
     @Autowired
     private IDishService dishService;
+
+    @Autowired
+    private IDishStatusService dishStatusService;
 
     @Autowired
     Environment env;
@@ -99,6 +104,12 @@ public class DishController {
         }
         dishService.save(existDish);
         return new ResponseEntity<>(existDish, HttpStatus.OK);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Iterable<DishStatus>> getAllStatus(){
+        Iterable<DishStatus> dishStatuses = dishStatusService.findAll();
+        return new ResponseEntity<>(dishStatuses, HttpStatus.OK);
     }
 
 }
