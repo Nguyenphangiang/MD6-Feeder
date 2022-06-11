@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -26,7 +27,7 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/merchant")
 public class MerchantController {
-
+    public static final String HTTP_LOCALHOST_4200 = "http://localhost:4200";
     @Value("${upload.path}")
     String uploadPath;
 
@@ -41,13 +42,13 @@ public class MerchantController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> register(@ModelAttribute SignUpFormMerchant user) {
+    public ResponseEntity<AppUser> register(@ModelAttribute SignUpFormMerchant user, HttpServletRequest request) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         AppUser newUser = new AppUser(user.getUsername(), user.getPassword());
-        appUserService.saveMerchant(newUser);
+        appUserService.saveMerchant(newUser,getSiteURL(request),user.getEmail(),user.getName());
         Merchant merchant = new Merchant();
         merchant.setAddress(user.getAddress());
         merchant.setEmail(user.getEmail());
@@ -65,6 +66,10 @@ public class MerchantController {
         merchant.setSafeFoodLicense(licenseStringPath);
         merchantService.save(merchant);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
+    private String getSiteURL(HttpServletRequest request) {
+//        String siteURL = request.getRequestURL().toString();
+        return HTTP_LOCALHOST_4200.replace(request.getServletPath(), "");
     }
     @GetMapping("/{id}")
     public ResponseEntity<Merchant> findById(@PathVariable Long id){
