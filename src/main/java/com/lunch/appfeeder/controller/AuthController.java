@@ -25,6 +25,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin("*")
 public class AuthController {
@@ -61,11 +63,10 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt, currentUser.getId(), userDetails.getUsername(),userDetails.getAuthorities()));
     }
     @PostMapping("customer/register")
-    public ResponseEntity<AppUser> register(@RequestBody SignUpFormCustomer user) {
+    public ResponseEntity<AppUser> register(@ModelAttribute SignUpFormCustomer user) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
         AppUser newUser = new AppUser(user.getUsername(), user.getPassword());
         appUserService.save(newUser);
         Customer customer = new Customer(user.getName(),user.getEmail(),user.getPhone(),user.getAddress(),newUser);
@@ -87,6 +88,17 @@ public class AuthController {
     public ResponseEntity<Iterable<Merchant>> findMerchantByName(@PathVariable String name) {
         Iterable<Merchant> merchants = merchantService.findMerchantByNameContaining(name);
         return new ResponseEntity<>(merchantService.findMerchantByNameContaining(name), HttpStatus.OK);
+    }
+    @GetMapping("customer/list")
+    public ResponseEntity<Iterable<Customer>> showAllCustomer() {
+        return new ResponseEntity<>(customerService.findAll(), HttpStatus.OK);
+    }
+    @DeleteMapping("customer/delete/{id}")
+    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) {
+        Optional<Customer> customer = customerService.findById(id);
+        customerService.remove(id);
+        appUserService.remove(customer.get().getAppUser().getId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 //    @PostMapping("/changePassword/{id}")
 //    public ResponseEntity<AppUser> changePassword(@PathVariable Long id, @RequestBody ChangePassword changePassword) {
