@@ -92,8 +92,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());//Tùy chỉnh lại thông báo 401 thông qua class restEntryPoint
         http.authorizeRequests()
                 .antMatchers("/customer/**",
+                        "/merchant/**",
                         "/login",
-                        "/register"
+                        "/register",
+                        "/dish/**"
                         ).permitAll()
                 .antMatchers("/home")
                 .access("hasRole('ROLE_ADMIN')")
