@@ -50,6 +50,21 @@ public class OrderController {
         return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
 
+    @GetMapping("/merchant/{id}")
+    public ResponseEntity<Iterable<Order>> findOrderByMerchantId(@PathVariable Long id){
+        Iterable<Order> allOrder = orderService.findAll();
+        List<Order> allOrders = (List<Order>) allOrder;
+        List<Order> orderList = new ArrayList<>();
+        for (Order order : allOrders){
+            if (order.getDish().getMerchant().getId().equals(id)){
+                orderList.add(order);
+            }
+        }
+        return new ResponseEntity<>(orderList, HttpStatus.OK);
+    }
+
+
+
     @PostMapping("")
     public ResponseEntity<Order> createNewOrder(@RequestBody Order order){
         orderService.save(order);
