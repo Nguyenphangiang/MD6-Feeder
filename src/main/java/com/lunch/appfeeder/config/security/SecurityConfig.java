@@ -94,6 +94,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/customer/**",
                         "/merchant/**",
                         "/login",
+                        "/login/**",
+                        "/verify",
                         "/register",
                         "/dish/**"
                         ).permitAll()
