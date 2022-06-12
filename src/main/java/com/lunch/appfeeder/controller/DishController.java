@@ -111,5 +111,9 @@ public class DishController {
         Iterable<DishStatus> dishStatuses = dishStatusService.findAll();
         return new ResponseEntity<>(dishStatuses, HttpStatus.OK);
     }
-
+    @GetMapping("/dishName/{dishName}")
+    public ResponseEntity<Iterable<Dish>> findDishByName(@PathVariable String dishName) {
+        Iterable<Dish> dishes = dishService.findDishByNameContaining(dishName);
+        return new ResponseEntity<>(dishes, HttpStatus.OK);
+    }
 }
