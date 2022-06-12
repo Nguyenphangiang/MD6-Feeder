@@ -8,10 +8,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface IAppUserService extends IGeneralService<AppUser>, UserDetailsService {
     AppUser findByUsername(String username);
 
+    AppUser save(AppUser appUser, String siteURL, String email, String name);
+
     Iterable<AppUser> findAll();
 
     AppUser saveAdmin(AppUser appUser);
-    AppUser saveMerchant(AppUser appUser);
 
+    AppUser saveMerchant(AppUser appUser, String siteURL, String email, String name);
 
+    boolean verify(String verificationCode);
 }

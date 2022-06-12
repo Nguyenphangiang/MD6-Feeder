@@ -12,31 +12,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserPrincipal implements UserDetails {
+    private AppUser appUser;
+
     private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<? extends GrantedAuthority> getAppRoles() {
-        return appRoles;
-    }
-
-    public void setAppRoles(List<? extends GrantedAuthority> appRoles) {
-        this.appRoles = appRoles;
-    }
 
     private String username;
 
@@ -44,6 +22,21 @@ public class UserPrincipal implements UserDetails {
 
     private List<? extends GrantedAuthority> appRoles;
 
+    public UserPrincipal(AppUser appUser){
+        this.appUser = appUser;
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
+    }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
     public UserPrincipal(Long id, String username, String password, List<? extends GrantedAuthority> appRoles) {
         this.id = id;
         this.username = username;
@@ -104,8 +97,27 @@ public class UserPrincipal implements UserDetails {
     }
 
 
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<? extends GrantedAuthority> getAppRoles() {
+        return appRoles;
+    }
+
+    public void setAppRoles(List<? extends GrantedAuthority> appRoles) {
+        this.appRoles = appRoles;
     }
 }

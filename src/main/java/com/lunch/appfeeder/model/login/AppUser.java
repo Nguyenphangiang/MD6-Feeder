@@ -17,6 +17,49 @@ public class AppUser {
     @JoinTable(name = "user_role")
     private List<AppRole> roles;
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    private boolean enabled;
+
+    public AppUser(Long id, String username, String password, List<AppRole> roles, String verificationCode, boolean enabled) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.verificationCode = verificationCode;
+        this.enabled = enabled;
+    }
+
+    public AppUser(String username, String password, boolean enabled) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+    }
+
+    public AppUser(String username, String password, List<AppRole> roles, String verificationCode, boolean enabled) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.verificationCode = verificationCode;
+        this.enabled = enabled;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public AppUser(String username, String password) {
         this.username = username;
