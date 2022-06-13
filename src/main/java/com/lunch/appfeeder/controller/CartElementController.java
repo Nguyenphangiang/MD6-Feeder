@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.transform.OutputKeys;
 import java.util.Optional;
 
 @RestController
@@ -26,7 +27,7 @@ public class CartElementController {
     @Autowired
     private IDishService dishService;
 
-    @GetMapping("/{idCustomer}")
+    @GetMapping("/customer/{idCustomer}")
     public ResponseEntity<Iterable<CartElement>> showAllCartElement(@PathVariable Long idCustomer) {
         Optional<Customer> customer = customerService.findById(idCustomer);
         return new ResponseEntity(cartElementService.findAllByCustomer_Id(customer.get()), HttpStatus.OK);
@@ -38,6 +39,12 @@ public class CartElementController {
         Optional<Dish> dish = dishService.findById(idDish);
         CartElement cartElement1 = new CartElement(customer.get(), dish.get(), cartElement.getQuantity(), cartElement.getNote());
         return new ResponseEntity<>(cartElementService.save(cartElement1), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{idCart}")
+    public ResponseEntity<CartElement> findCartElmentById(@PathVariable Long idCart) {
+        Optional<CartElement> cartElement1 = cartElementService.findById(idCart);
+        return new ResponseEntity<>(cartElement1.get(),HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -62,13 +69,26 @@ public class CartElementController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CartElement> updateCartElement(@PathVariable Long id, @RequestBody CartElement cartElement) {
+    @PutMapping("/reduce/{id}")
+    public ResponseEntity<CartElement> reduceQuantityOfCartElement(@PathVariable Long id) {
         Optional<CartElement> cartElement1 = cartElementService.findById(id);
-        cartElement.setId(id);
+        CartElement cartElement2 = new CartElement(cartElement1.get().getCustomer(), cartElement1.get().getDish(), cartElement1.get().getQuantity()-1, cartElement1.get().getNote());
+        cartElement2.setId(id);
         if (cartElement1.isPresent()) {
-            cartElementService.save(cartElement);
-            return new ResponseEntity<>(cartElement1.get(), HttpStatus.OK);
+            cartElementService.save(cartElement2);
+            return new ResponseEntity<>(cartElement2, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/increase/{id}")
+    public ResponseEntity<CartElement> increaseQuantityOfCartElement(@PathVariable Long id) {
+        Optional<CartElement> cartElement1 = cartElementService.findById(id);
+        CartElement cartElement2 = new CartElement(cartElement1.get().getCustomer(), cartElement1.get().getDish(), cartElement1.get().getQuantity()+1, cartElement1.get().getNote());
+        cartElement2.setId(id);
+        if (cartElement1.isPresent()) {
+            cartElementService.save(cartElement2);
+            return new ResponseEntity<>(cartElement2, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
