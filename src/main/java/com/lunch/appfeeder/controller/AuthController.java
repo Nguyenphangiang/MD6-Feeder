@@ -57,7 +57,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AppUser appUser) {
-
+        Merchant merchant = merchantService.findMerchantByUserUsername(appUser.getUsername());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(appUser.getUsername(), appUser.getPassword())
         );
@@ -67,6 +67,11 @@ public class AuthController {
         AppUser currentUser = appUserService.findByUsername(appUser.getUsername());
         if (!currentUser.isEnabled()) {
             return null;
+        }
+        if (merchant != null) {
+            if (merchant.getStatus().getName().equals("blocked") || merchant.getStatus().getName().equals("not_verified")) {
+                return null;
+            }
         }
         return ResponseEntity.ok(new JwtResponse(jwt, currentUser.getId(), userDetails.getUsername(),userDetails.getAuthorities()));
     }

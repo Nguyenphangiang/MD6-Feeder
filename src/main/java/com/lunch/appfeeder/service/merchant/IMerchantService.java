@@ -8,4 +8,5 @@ public interface IMerchantService extends IGeneralService<Merchant> {
      Merchant setMerchantStatus(Merchant merchant, MerchantStatus merchantStatus);
      Iterable<Merchant> findMerchantByNameContaining(String name);
      Merchant findMerchantByUser_Id(Long id);
+     Merchant findMerchantByUserUsername(String name);
 }
