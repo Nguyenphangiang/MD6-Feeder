@@ -1,5 +1,7 @@
-package com.lunch.appfeeder.model.dish;
+package com.lunch.appfeeder.model.entity.DTO;
 
+import com.lunch.appfeeder.model.entity.DishStatus;
+import com.lunch.appfeeder.model.entity.merchant.Merchant;
 import org.springframework.web.multipart.MultipartFile;
 
 public class DishForm {
@@ -8,29 +10,29 @@ public class DishForm {
     private String name;
     private String description;
     private Long price;
-    private String status;
-    private Long merchant_id;
+    private DishStatus status;
+    private Merchant merchant;
 
     public DishForm() {
     }
 
-    public DishForm(MultipartFile image, String name, String description, Long price, String status, Long merchant_id) {
+    public DishForm(MultipartFile image, String name, String description, Long price, DishStatus status, Merchant merchant) {
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
-    public DishForm(Long id, MultipartFile image, String name, String description, Long price, String status, Long merchant_id) {
+    public DishForm(Long id, MultipartFile image, String name, String description, Long price, DishStatus status, Merchant merchant) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
     public Long getId() {
@@ -73,19 +75,19 @@ public class DishForm {
         this.price = price;
     }
 
-    public String getStatus() {
+    public DishStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(DishStatus status) {
         this.status = status;
     }
 
-    public Long getMerchant_id() {
-        return merchant_id;
+    public Merchant getMerchant() {
+        return merchant;
     }
 
     public void setMerchant_id(Long merchant_id) {
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 }

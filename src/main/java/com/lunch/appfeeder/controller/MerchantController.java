@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -25,7 +27,7 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/merchant")
 public class MerchantController {
-
+    public static final String HTTP_LOCALHOST_4200 = "http://localhost:4200";
     @Value("${upload.path}")
     String uploadPath;
 
@@ -40,13 +42,13 @@ public class MerchantController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> register(@ModelAttribute SignUpFormMerchant user) {
+    public ResponseEntity<AppUser> register(@ModelAttribute SignUpFormMerchant user, HttpServletRequest request) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         AppUser newUser = new AppUser(user.getUsername(), user.getPassword());
-        appUserService.saveMerchant(newUser);
+        appUserService.saveMerchant(newUser,getSiteURL(request),user.getEmail(),user.getName());
         Merchant merchant = new Merchant();
         merchant.setAddress(user.getAddress());
         merchant.setEmail(user.getEmail());
@@ -64,6 +66,10 @@ public class MerchantController {
         merchant.setSafeFoodLicense(licenseStringPath);
         merchantService.save(merchant);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
+    private String getSiteURL(HttpServletRequest request) {
+//        String siteURL = request.getRequestURL().toString();
+        return HTTP_LOCALHOST_4200.replace(request.getServletPath(), "");
     }
     @GetMapping("/{id}")
     public ResponseEntity<Merchant> findById(@PathVariable Long id){
@@ -106,10 +112,30 @@ public class MerchantController {
         return new ResponseEntity<>(merchantService.save(merchant), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity<Merchant> delete(@PathVariable Long id){
         Optional<Merchant> merchant = merchantService.findById(id);
         merchantService.remove(id);
         appUserService.remove(merchant.get().getUser().getId());
         return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
+    @GetMapping("/userId/{userId}")
+    public ResponseEntity<Merchant> findMerchantByUserId(@PathVariable Long userId) {
+        Merchant merchant = merchantService.findMerchantByUser_Id(userId);
+        return new ResponseEntity<>(merchant, HttpStatus.OK);
+    }
+    @GetMapping("/active/{id}")
+    public ResponseEntity<Merchant> activeMerchantById(@PathVariable Long id) {
+        Merchant oldMerchant = merchantService.findById(id).get();
+        oldMerchant.setStatus(new MerchantStatus(1L));
+        merchantService.save(oldMerchant);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/block/{id}")
+    public ResponseEntity<Merchant> blockMerchantById(@PathVariable Long id) {
+        Merchant oldMerchant = merchantService.findById(id).get();
+        oldMerchant.setStatus(new MerchantStatus(3L));
+        merchantService.save(oldMerchant);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

@@ -1,4 +1,7 @@
-package com.lunch.appfeeder.model.dish;
+package com.lunch.appfeeder.model.entity;
+
+
+import com.lunch.appfeeder.model.entity.merchant.Merchant;
 
 import javax.persistence.*;
 
@@ -13,29 +16,33 @@ public class Dish {
     private String name;
     private String description;
     private Long price;
-    private String status;
-    private Long merchant_id;
 
+    @ManyToOne
+    @JoinColumn (name = "merchant_id")
+    private Merchant merchant;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private DishStatus status;
     public Dish() {
     }
 
-    public Dish(String image, String name, String description, Long price, String status, Long merchant_id) {
+    public Dish(String image, String name, String description, Long price, DishStatus status, Merchant merchant) {
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
-    public Dish(Long id, String image, String name, String description, Long price, String status, Long merchant_id) {
+    public Dish(Long id, String image, String name, String description, Long price, DishStatus status, Merchant merchant) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
-        this.merchant_id = merchant_id;
+        this.merchant = merchant;
     }
 
     public Long getId() {
@@ -78,19 +85,19 @@ public class Dish {
         this.price = price;
     }
 
-    public String getStatus() {
+    public DishStatus getDishStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setDishStatus(DishStatus status) {
         this.status = status;
     }
 
-    public Long getMerchant_id() {
-        return merchant_id;
+    public Merchant getMerchant() {
+        return merchant;
     }
 
-    public void setMerchant_id(Long merchant_id) {
-        this.merchant_id = merchant_id;
+    public void setMerchant_id(Merchant merchant) {
+        this.merchant = merchant;
     }
 }
