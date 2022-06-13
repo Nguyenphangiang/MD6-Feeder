@@ -120,6 +120,10 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("user/list")
+    public ResponseEntity<Iterable<AppUser>> showAllUser() {
+        return new ResponseEntity<>(appUserService.findAll(), HttpStatus.OK);
+    }
 //    @PostMapping("/changePassword/{id}")
 //    public ResponseEntity<AppUser> changePassword(@PathVariable Long id, @RequestBody ChangePassword changePassword) {
 //        Optional<AppUser> appUser = this.appUserService.findById(id);
