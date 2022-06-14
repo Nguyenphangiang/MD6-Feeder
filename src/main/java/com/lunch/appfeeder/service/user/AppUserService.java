@@ -47,8 +47,8 @@ public class AppUserService implements IAppUserService{
     }
 
     @Override
-    public boolean existsAppUserByUsername(String name) {
-        return userRepository.existsAppUserByUsername(name);
+    public boolean existsAppUsersByUsername(String name) {
+        return userRepository.existsAppUsersByUsername(name);
     }
 
     @Override

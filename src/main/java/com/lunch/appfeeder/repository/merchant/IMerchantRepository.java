@@ -17,4 +17,6 @@ public interface IMerchantRepository extends JpaRepository<Merchant,Long> {
     Merchant findMerchantByUser_Id(Long id);
 
     Merchant findMerchantByUserUsername(String name);
+
+    Iterable<Merchant> findAllByGoldPartnerTrue ();
 }

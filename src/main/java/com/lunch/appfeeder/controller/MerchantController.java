@@ -3,6 +3,7 @@ package com.lunch.appfeeder.controller;
 import com.lunch.appfeeder.model.entity.DTO.MerchantForm;
 import com.lunch.appfeeder.model.entity.DTO.MerchantWithStatus;
 import com.lunch.appfeeder.model.entity.DTO.SignUpFormMerchant;
+import com.lunch.appfeeder.model.entity.Dish;
 import com.lunch.appfeeder.model.entity.merchant.Merchant;
 import com.lunch.appfeeder.model.entity.merchant.MerchantStatus;
 import com.lunch.appfeeder.model.login.AppUser;
@@ -28,6 +29,7 @@ import java.util.Optional;
 @RequestMapping("/merchant")
 public class MerchantController {
     public static final String HTTP_LOCALHOST_4200 = "http://localhost:4200";
+    public static final long NOT_VERIFIED = 2L;
     @Value("${upload.path}")
     String uploadPath;
 
@@ -46,7 +48,9 @@ public class MerchantController {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
+        if (appUserService.existsAppUsersByUsername(user.getUsername())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         AppUser newUser = new AppUser(user.getUsername(), user.getPassword());
         appUserService.saveMerchant(newUser,getSiteURL(request),user.getEmail(),user.getName());
         Merchant merchant = new Merchant();
@@ -55,8 +59,8 @@ public class MerchantController {
         merchant.setName(user.getName());
         merchant.setPhone(user.getPhone());
         merchant.setUser(newUser);
-        merchant.setStatus(new MerchantStatus(2L));
-
+        merchant.setStatus(new MerchantStatus(NOT_VERIFIED));
+        merchant.setGoldPartner(false);
         String licenseStringPath = user.getSafeFoodLicense().getOriginalFilename();
         try {
             FileCopyUtils.copy(user.getSafeFoodLicense().getBytes(), new File(uploadPath + licenseStringPath));
@@ -138,5 +142,16 @@ public class MerchantController {
         merchantService.save(oldMerchant);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    @GetMapping("/goldPartner")
+    public ResponseEntity<Iterable<Merchant>> showListGoldMerchant() {
+        Iterable<Merchant> merchants = merchantService.findAllByGoldPartnerTrue();
+        return new ResponseEntity<>(merchants, HttpStatus.OK);
+    }
+    @GetMapping("/setGold/{id}")
+    public ResponseEntity<Merchant> setGoldPartnerMerchant(@PathVariable Long id) {
+        Merchant oldMerchant = merchantService.findById(id).get();
+        oldMerchant.setGoldPartner(!oldMerchant.isGoldPartner());
+        merchantService.save(oldMerchant);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

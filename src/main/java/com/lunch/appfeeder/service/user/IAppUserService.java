@@ -18,5 +18,5 @@ public interface IAppUserService extends IGeneralService<AppUser>, UserDetailsSe
 
     boolean verify(String verificationCode);
 
-    boolean existsAppUserByUsername(String name);
+    boolean existsAppUsersByUsername(String name);
 }

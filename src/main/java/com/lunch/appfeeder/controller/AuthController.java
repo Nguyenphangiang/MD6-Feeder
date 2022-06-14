@@ -34,6 +34,8 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class AuthController {
     public static final String HTTP_LOCALHOST_4200 = "http://localhost:4200";
+    public static final String MERCHANT_BLOCKED = "blocked";
+    public static final String MERCHANT_NOT_VERIFIED = "not_verified";
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -69,7 +71,7 @@ public class AuthController {
             return null;
         }
         if (merchant != null) {
-            if (merchant.getStatus().getName().equals("blocked") || merchant.getStatus().getName().equals("not_verified")) {
+            if (merchant.getStatus().getName().equals(MERCHANT_BLOCKED) || merchant.getStatus().getName().equals(MERCHANT_NOT_VERIFIED)) {
                 return null;
             }
         }
@@ -80,9 +82,8 @@ public class AuthController {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if  (appUserService.existsAppUserByUsername(user.getUsername())){
-            String name = user.getUsername();
-            return null;
+        if  (appUserService.existsAppUsersByUsername(user.getUsername())){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         AppUser newUser = new AppUser(user.getUsername(), user.getPassword());
         appUserService.save(newUser, getSiteURL(request),user.getEmail(),user.getName());

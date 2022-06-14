@@ -13,5 +13,5 @@ public interface IUserRepository extends JpaRepository<AppUser, Long> {
     @Query("SELECT u FROM AppUser as u WHERE u.verificationCode = ?1")
     AppUser findByVerificationCode(String code);
 
-    boolean existsAppUserByUsername(String name);
+    boolean existsAppUsersByUsername(String name);
 }

@@ -141,4 +141,5 @@ public class DishController {
         Iterable<Dish> dishes = dishService.findAllByStatusId(STATUS_SALE);
         return new ResponseEntity<>(dishes, HttpStatus.OK);
     }
+
 }
