@@ -37,4 +37,3 @@ out/
 .vscode/
 #ignore env
 src/main/resources/thiet.env
-src/main/resources/application.properties
