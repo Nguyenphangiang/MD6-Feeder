@@ -75,6 +75,11 @@ public class MerchantController {
     public ResponseEntity<Merchant> findById(@PathVariable Long id){
         return new ResponseEntity<>(merchantService.findById(id).get(), HttpStatus.OK);
     }
+    @GetMapping("/username/{name}")
+    public ResponseEntity<Merchant> findMerchantByUsername(@PathVariable String name) {
+        Merchant merchant = merchantService.findMerchantByUserUsername(name);
+        return new ResponseEntity<>(merchantService.findMerchantByUserUsername(name), HttpStatus.OK);
+    }
 //    @PostMapping()
 //    public ResponseEntity<Merchant> saveNew(@ModelAttribute MerchantWithStatus merchantWithStatus){
 //        Merchant merchant = new Merchant();
