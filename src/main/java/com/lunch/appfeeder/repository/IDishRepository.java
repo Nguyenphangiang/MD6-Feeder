@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface IDishRepository extends PagingAndSortingRepository<Dish, Long> {
     Iterable<Dish> findAllByMerchant_Id(Long merchantId);
 
+    Iterable<Dish> findDishByNameContaining(String name);
 }

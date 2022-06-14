@@ -37,4 +37,9 @@ public class DishService implements IDishService{
         return dishRepository.findAllByMerchant_Id(merchantId);
     }
 
+    @Override
+    public Iterable<Dish> findDishByNameContaining(String name) {
+        return dishRepository.findDishByNameContaining(name);
+    }
+
 }
