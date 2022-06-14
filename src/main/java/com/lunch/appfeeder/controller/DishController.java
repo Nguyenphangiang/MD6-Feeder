@@ -26,6 +26,8 @@ import java.util.Optional;
 @RequestMapping("/dish")
 public class DishController {
 
+    public static final long STATUS_SOLD = 2L;
+    public static final long STATUS_SALE = 1L;
     @Autowired
     private IDishService dishService;
 
@@ -62,6 +64,7 @@ public class DishController {
             e.printStackTrace();
         }
         Dish dish = new Dish(fileName,dishForm.getName(),dishForm.getDescription(),dishForm.getPrice(),dishForm.getStatus(), merchant.get());
+        dish.setRecommend(false);
         dishService.save(dish);
         return new ResponseEntity<>(dish,HttpStatus.ACCEPTED);
     }
@@ -114,6 +117,28 @@ public class DishController {
     @GetMapping("/dishName/{dishName}")
     public ResponseEntity<Iterable<Dish>> findDishByName(@PathVariable String dishName) {
         Iterable<Dish> dishes = dishService.findDishByNameContaining(dishName);
+        return new ResponseEntity<>(dishes, HttpStatus.OK);
+    }
+    @GetMapping("/recommend/{idDish}")
+    public ResponseEntity<Dish> addDishRecommend(@PathVariable Long idDish) {
+        Dish oldDish = dishService.findById(idDish).get();
+        oldDish.setRecommend(true);
+        dishService.save(oldDish);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/recommend/sale")
+    public ResponseEntity<Iterable<Dish>> showListDishRecommend() {
+        Iterable<Dish> dishes = dishService.findAllByRecommendTrue();
+        return new ResponseEntity<>(dishes, HttpStatus.OK);
+    }
+    @GetMapping("/recommend/sold")
+    public ResponseEntity<Iterable<Dish>> showListSoldDish() {
+        Iterable<Dish> dishes = dishService.findAllByStatusId(STATUS_SOLD);
+        return new ResponseEntity<>(dishes, HttpStatus.OK);
+    }
+    @GetMapping("/status/onSale")
+    public ResponseEntity<Iterable<Dish>> showListDishOnSale() {
+        Iterable<Dish> dishes = dishService.findAllByStatusId(STATUS_SALE);
         return new ResponseEntity<>(dishes, HttpStatus.OK);
     }
 }

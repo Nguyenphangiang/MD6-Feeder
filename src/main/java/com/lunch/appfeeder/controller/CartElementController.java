@@ -30,7 +30,7 @@ public class CartElementController {
     @GetMapping("/customer/{idCustomer}")
     public ResponseEntity<Iterable<CartElement>> showAllCartElement(@PathVariable Long idCustomer) {
         Optional<Customer> customer = customerService.findById(idCustomer);
-        return new ResponseEntity(cartElementService.findAllByCustomer_Id(customer.get()), HttpStatus.OK);
+        return new ResponseEntity<>(cartElementService.findAllByCustomer_Id(customer.get()), HttpStatus.OK);
     }
 
     @PostMapping("/{idCustomer}/{idDish}")
