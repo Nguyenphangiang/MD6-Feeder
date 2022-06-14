@@ -80,6 +80,10 @@ public class AuthController {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        if  (appUserService.existsAppUserByUsername(user.getUsername())){
+            String name = user.getUsername();
+            return null;
+        }
         AppUser newUser = new AppUser(user.getUsername(), user.getPassword());
         appUserService.save(newUser, getSiteURL(request),user.getEmail(),user.getName());
         Customer customer = new Customer(user.getName(),user.getEmail(),user.getPhone(),user.getAddress(),newUser);

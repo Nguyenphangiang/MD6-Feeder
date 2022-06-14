@@ -13,6 +13,7 @@ public class SignUpFormCustomer {
     @UniqueUsername
     @Size(min = 5, max = 12)
     private String username;
+
     private String password;
     private String confirmPassword;
     private String email;
