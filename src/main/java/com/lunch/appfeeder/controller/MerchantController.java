@@ -107,13 +107,17 @@ public class MerchantController {
         merchant.setPhone(merchantForm.getPhone());
         merchant.setUser(merchantForm.getUser());
         merchant.setStatus(merchantForm.getStatus());
-        String licenseStringPath = merchantForm.getSafeFoodLicense().getOriginalFilename();
-        try {
-            FileCopyUtils.copy(merchantForm.getSafeFoodLicense().getBytes(), new File(uploadPath + licenseStringPath));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(merchantForm.getSafeFoodLicense()!=null){
+            String licenseStringPath = merchantForm.getSafeFoodLicense().getOriginalFilename();
+            try {
+                FileCopyUtils.copy(merchantForm.getSafeFoodLicense().getBytes(), new File(uploadPath + licenseStringPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            merchant.setSafeFoodLicense(licenseStringPath);
+        }else{
+            merchant.setSafeFoodLicense(merchantService.findById(id).get().getSafeFoodLicense());
         }
-        merchant.setSafeFoodLicense(licenseStringPath);
         return new ResponseEntity<>(merchantService.save(merchant), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
@@ -128,30 +132,5 @@ public class MerchantController {
         Merchant merchant = merchantService.findMerchantByUser_Id(userId);
         return new ResponseEntity<>(merchant, HttpStatus.OK);
     }
-    @GetMapping("/active/{id}")
-    public ResponseEntity<Merchant> activeMerchantById(@PathVariable Long id) {
-        Merchant oldMerchant = merchantService.findById(id).get();
-        oldMerchant.setStatus(new MerchantStatus(1L));
-        merchantService.save(oldMerchant);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @GetMapping("/block/{id}")
-    public ResponseEntity<Merchant> blockMerchantById(@PathVariable Long id) {
-        Merchant oldMerchant = merchantService.findById(id).get();
-        oldMerchant.setStatus(new MerchantStatus(3L));
-        merchantService.save(oldMerchant);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @GetMapping("/goldPartner")
-    public ResponseEntity<Iterable<Merchant>> showListGoldMerchant() {
-        Iterable<Merchant> merchants = merchantService.findAllByGoldPartnerTrue();
-        return new ResponseEntity<>(merchants, HttpStatus.OK);
-    }
-    @GetMapping("/setGold/{id}")
-    public ResponseEntity<Merchant> setGoldPartnerMerchant(@PathVariable Long id) {
-        Merchant oldMerchant = merchantService.findById(id).get();
-        oldMerchant.setGoldPartner(!oldMerchant.isGoldPartner());
-        merchantService.save(oldMerchant);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
 }

@@ -91,18 +91,20 @@ public class DishController {
         Optional<Merchant> merchant = merchantService.findById(merchantId);
         Optional<Dish> dishOptional = dishService.findById(id);
         dishForm.setId(dishOptional.get().getId());
+        String fileUpload = env.getProperty("upload.path");
         MultipartFile multipartFile = dishForm.getImage();
         String fileName = multipartFile.getOriginalFilename();
-        String fileUpload = env.getProperty("upload.path");
+        if (fileName.equals("filename.jpg")){
+            fileName = dishOptional.get().getImage();
+        }
+        else {
+            try {
+                FileCopyUtils.copy(multipartFile.getBytes(), new File(fileUpload+fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         Dish existDish = new Dish(id,fileName,dishForm.getName(),dishForm.getDescription(),dishForm.getPrice(),dishForm.getDishStatus(), merchant.get());
-        try {
-            FileCopyUtils.copy(multipartFile.getBytes(), new File(fileUpload+fileName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (existDish.getImage().equals("filename.jpg")){
-            existDish.setImage(dishOptional.get().getImage());
-        }
         dishService.save(existDish);
         return new ResponseEntity<>(existDish, HttpStatus.OK);
     }
@@ -116,13 +118,6 @@ public class DishController {
     public ResponseEntity<Iterable<Dish>> findDishByName(@PathVariable String dishName) {
         Iterable<Dish> dishes = dishService.findDishByNameContaining(dishName);
         return new ResponseEntity<>(dishes, HttpStatus.OK);
-    }
-    @GetMapping("/recommend/{idDish}")
-    public ResponseEntity<Dish> addDishRecommend(@PathVariable Long idDish) {
-        Dish oldDish = dishService.findById(idDish).get();
-        oldDish.setRecommend(true);
-        dishService.save(oldDish);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/recommend/sale")
     public ResponseEntity<Iterable<Dish>> showListDishRecommend() {

@@ -13,6 +13,6 @@ public interface IDishRepository extends PagingAndSortingRepository<Dish, Long> 
 
     Iterable<Dish> findAllByRecommendTrue();
 
-    Iterable<Dish> findAllByDishStatus(Long id);
+    Iterable<Dish> findAllByDishStatusId(Long id);
 
 }

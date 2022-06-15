@@ -36,4 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 #ignore env
-src/main/resources/phangiang.env
+src/main/resources/thiet.env

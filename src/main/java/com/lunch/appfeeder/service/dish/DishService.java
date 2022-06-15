@@ -49,7 +49,7 @@ public class DishService implements IDishService{
 
     @Override
     public Iterable<Dish> findAllByDishStatusId(Long id) {
-        return dishRepository.findAllByDishStatus(id);
+        return dishRepository.findAllByDishStatusId(id);
     }
 
 }
