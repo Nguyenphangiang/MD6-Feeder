@@ -16,24 +16,21 @@ public class CartElement {
     @OneToOne
     private Dish dish;
     private Long quantity;
-    private String note ;
 
     public CartElement() {
     }
 
-    public CartElement(Customer customer, Dish dish, Long quantity, String note) {
-        this.customer = customer;
-        this.dish = dish;
-        this.quantity = quantity;
-        this.note = note;
-    }
-
-    public CartElement(Long id, Customer customer, Dish dish, Long quantity, String note) {
+    public CartElement(Long id, Customer customer, Dish dish, Long quantity) {
         this.id = id;
         this.customer = customer;
         this.dish = dish;
         this.quantity = quantity;
-        this.note = note;
+    }
+
+    public CartElement(Customer customer, Dish dish, Long quantity) {
+        this.customer = customer;
+        this.dish = dish;
+        this.quantity = quantity;
     }
 
     public Customer getCustomer() {
@@ -69,11 +66,4 @@ public class CartElement {
         this.quantity = quantity;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
 }

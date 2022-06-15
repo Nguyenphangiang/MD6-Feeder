@@ -1,7 +1,10 @@
 package com.lunch.appfeeder.controller;
 
 import com.lunch.appfeeder.model.entity.Order;
+import com.lunch.appfeeder.service.cartelement.ICartElementService;
+import com.lunch.appfeeder.service.invoice.IInvoiceService;
 import com.lunch.appfeeder.service.order.IOrderService;
+import com.lunch.appfeeder.service.invoicestatus.IInvoiceStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,13 @@ import java.util.Optional;
 public class OrderController {
     @Autowired
     private IOrderService orderService;
+    @Autowired
+    private ICartElementService cartElementService;
+    @Autowired
+    private IInvoiceService iInvoiceService;
+    @Autowired
+    private IInvoiceStatusService invoiceStatusService;
+
 
     @GetMapping
     public ResponseEntity<Iterable<Order>> findAllOrder(){
@@ -38,18 +48,18 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @GetMapping("/customer/{id}")
-    public ResponseEntity<Iterable<Order>> findOrderByUserId(@PathVariable Long id){
-        Iterable<Order> allOrder = orderService.findAll();
-        List<Order> allOrders = (List<Order>) allOrder;
-        List<Order> orderList = new ArrayList<>();
-        for (Order order : allOrders){
-            if (order.getCustomer().getId().equals(id)){
-                orderList.add(order);
-            }
-        }
-        return new ResponseEntity<>(orderList, HttpStatus.OK);
-    }
+//    @GetMapping("/customer/{id}")
+//    public ResponseEntity<Iterable<Order>> findOrderByUserId(@PathVariable Long id){
+//        Iterable<Order> allOrder = orderService.findAll();
+//        List<Order> allOrders = (List<Order>) allOrder;
+//        List<Order> orderList = new ArrayList<>();
+//        for (Order order : allOrders){
+//            if (order.getCustomer().getId().equals(id)){
+//                orderList.add(order);
+//            }
+//        }
+//        return new ResponseEntity<>(orderList, HttpStatus.OK);
+//    }
 
 //    @GetMapping("/merchant/{id}")
 //    public ResponseEntity<Iterable<Order>> findOrderByMerchantId(@PathVariable Long id){
@@ -71,7 +81,7 @@ public ResponseEntity<Iterable<Order>> findAllOrderByMerchant(@PathVariable Long
 
 
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<Order> createNewOrder(@RequestBody Order order){
         orderService.save(order);
         return new ResponseEntity<>(order, HttpStatus.CREATED);

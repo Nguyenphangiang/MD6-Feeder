@@ -47,6 +47,11 @@ public class AppUserService implements IAppUserService{
     }
 
     @Override
+    public boolean existsAppUserByUsername(String name) {
+        return userRepository.existsAppUserByUsername(name);
+    }
+
+    @Override
     public AppUser saveAdmin(AppUser appUser) {
         String password = appUser.getPassword();
         String encodePassword = passwordEncoder.encode(password);//Mã hóa pass của admin

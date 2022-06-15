@@ -30,14 +30,14 @@ public class CartElementController {
     @GetMapping("/customer/{idCustomer}")
     public ResponseEntity<Iterable<CartElement>> showAllCartElement(@PathVariable Long idCustomer) {
         Optional<Customer> customer = customerService.findById(idCustomer);
-        return new ResponseEntity(cartElementService.findAllByCustomer_Id(customer.get()), HttpStatus.OK);
+        return new ResponseEntity<>(cartElementService.findAllByCustomer_Id(customer.get()), HttpStatus.OK);
     }
 
     @PostMapping("/{idCustomer}/{idDish}")
     public ResponseEntity<CartElement> addToCartElement(@RequestBody CartElement cartElement, @PathVariable Long idCustomer, @PathVariable Long idDish) {
         Optional<Customer> customer = customerService.findById(idCustomer);
         Optional<Dish> dish = dishService.findById(idDish);
-        CartElement cartElement1 = new CartElement(customer.get(), dish.get(), cartElement.getQuantity(), cartElement.getNote());
+        CartElement cartElement1 = new CartElement(customer.get(), dish.get(), cartElement.getQuantity());
         return new ResponseEntity<>(cartElementService.save(cartElement1), HttpStatus.CREATED);
     }
 
@@ -72,7 +72,7 @@ public class CartElementController {
     @PutMapping("/reduce/{id}")
     public ResponseEntity<CartElement> reduceQuantityOfCartElement(@PathVariable Long id) {
         Optional<CartElement> cartElement1 = cartElementService.findById(id);
-        CartElement cartElement2 = new CartElement(cartElement1.get().getCustomer(), cartElement1.get().getDish(), cartElement1.get().getQuantity()-1, cartElement1.get().getNote());
+        CartElement cartElement2 = new CartElement(cartElement1.get().getCustomer(), cartElement1.get().getDish(), cartElement1.get().getQuantity()-1);
         cartElement2.setId(id);
         if (cartElement1.isPresent()) {
             cartElementService.save(cartElement2);
@@ -84,7 +84,7 @@ public class CartElementController {
     @PutMapping("/increase/{id}")
     public ResponseEntity<CartElement> increaseQuantityOfCartElement(@PathVariable Long id) {
         Optional<CartElement> cartElement1 = cartElementService.findById(id);
-        CartElement cartElement2 = new CartElement(cartElement1.get().getCustomer(), cartElement1.get().getDish(), cartElement1.get().getQuantity()+1, cartElement1.get().getNote());
+        CartElement cartElement2 = new CartElement(cartElement1.get().getCustomer(), cartElement1.get().getDish(), cartElement1.get().getQuantity()+1);
         cartElement2.setId(id);
         if (cartElement1.isPresent()) {
             cartElementService.save(cartElement2);
