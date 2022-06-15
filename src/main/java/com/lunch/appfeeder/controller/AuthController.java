@@ -6,10 +6,12 @@ import com.lunch.appfeeder.model.entity.DTO.JwtResponse;
 import com.lunch.appfeeder.model.entity.Customer;
 import com.lunch.appfeeder.model.entity.DTO.SignUpFormCustomer;
 import com.lunch.appfeeder.model.entity.DTO.UserPrincipal;
+import com.lunch.appfeeder.model.entity.address.OrderAddress;
 import com.lunch.appfeeder.model.entity.merchant.Merchant;
 import com.lunch.appfeeder.model.login.AppUser;
 import com.lunch.appfeeder.repository.ICustomerRepository;
 
+import com.lunch.appfeeder.service.address.IOrderAddressService;
 import com.lunch.appfeeder.service.customer.ICustomerService;
 import com.lunch.appfeeder.service.jwt.JwtService;
 import com.lunch.appfeeder.service.merchant.IMerchantService;
@@ -34,6 +36,9 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class AuthController {
     public static final String HTTP_LOCALHOST_4200 = "http://localhost:4200";
+    public static final String MERCHANT_BLOCKED = "blocked";
+    public static final String MERCHANT_NOT_VERIFIED = "not_verified";
+    public static final String HOME_ADDRESS = "Home";
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -55,6 +60,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private IOrderAddressService orderAddressService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AppUser appUser) {
         Merchant merchant = merchantService.findMerchantByUserUsername(appUser.getUsername());
@@ -69,7 +77,7 @@ public class AuthController {
             return null;
         }
         if (merchant != null) {
-            if (merchant.getStatus().getName().equals("blocked") || merchant.getStatus().getName().equals("not_verified")) {
+            if (merchant.getStatus().getName().equals(MERCHANT_BLOCKED) || merchant.getStatus().getName().equals(MERCHANT_NOT_VERIFIED)) {
                 return null;
             }
         }
@@ -80,10 +88,15 @@ public class AuthController {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        if  (appUserService.existsAppUsersByUsername(user.getUsername())){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         AppUser newUser = new AppUser(user.getUsername(), user.getPassword());
         appUserService.save(newUser, getSiteURL(request),user.getEmail(),user.getName());
         Customer customer = new Customer(user.getName(),user.getEmail(),user.getPhone(),user.getAddress(),newUser);
         customerService.save(customer);
+        OrderAddress orderAddress = new OrderAddress(HOME_ADDRESS,user.getAddress(),customer);
+        orderAddressService.save(orderAddress);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
     private String getSiteURL(HttpServletRequest request) {

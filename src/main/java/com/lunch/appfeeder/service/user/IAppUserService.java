@@ -17,4 +17,6 @@ public interface IAppUserService extends IGeneralService<AppUser>, UserDetailsSe
     AppUser saveMerchant(AppUser appUser, String siteURL, String email, String name);
 
     boolean verify(String verificationCode);
+
+    boolean existsAppUsersByUsername(String name);
 }

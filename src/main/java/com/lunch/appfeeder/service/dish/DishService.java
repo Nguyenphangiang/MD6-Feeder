@@ -42,4 +42,14 @@ public class DishService implements IDishService{
         return dishRepository.findDishByNameContaining(name);
     }
 
+    @Override
+    public Iterable<Dish> findAllByRecommendTrue() {
+        return dishRepository.findAllByRecommendTrue();
+    }
+
+    @Override
+    public Iterable<Dish> findAllByDishStatusId(Long id) {
+        return dishRepository.findAllByDishStatusId(id);
+    }
+
 }

@@ -22,6 +22,21 @@ public class Merchant {
 
     private String address;
 
+    public boolean isGoldPartner() {
+        return goldPartner;
+    }
+
+    public void setGoldPartner(boolean goldPartner) {
+        this.goldPartner = goldPartner;
+    }
+
+    public Merchant(boolean goldPartner) {
+        this.goldPartner = goldPartner;
+    }
+
+    @Column(name = "gold")
+    private boolean goldPartner;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private AppUser user;

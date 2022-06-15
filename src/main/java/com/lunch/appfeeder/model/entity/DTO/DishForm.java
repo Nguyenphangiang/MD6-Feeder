@@ -10,28 +10,28 @@ public class DishForm {
     private String name;
     private String description;
     private Long price;
-    private DishStatus status;
+    private DishStatus dishStatus;
     private Merchant merchant;
 
     public DishForm() {
     }
 
-    public DishForm(MultipartFile image, String name, String description, Long price, DishStatus status, Merchant merchant) {
+    public DishForm(MultipartFile image, String name, String description, Long price, DishStatus dishStatus, Merchant merchant) {
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.status = status;
+        this.dishStatus = dishStatus;
         this.merchant = merchant;
     }
 
-    public DishForm(Long id, MultipartFile image, String name, String description, Long price, DishStatus status, Merchant merchant) {
+    public DishForm(Long id, MultipartFile image, String name, String description, Long price, DishStatus dishStatus, Merchant merchant) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.status = status;
+        this.dishStatus = dishStatus;
         this.merchant = merchant;
     }
 
@@ -75,12 +75,12 @@ public class DishForm {
         this.price = price;
     }
 
-    public DishStatus getStatus() {
-        return status;
+    public DishStatus getDishStatus() {
+        return dishStatus;
     }
 
-    public void setStatus(DishStatus status) {
-        this.status = status;
+    public void setDishStatus(DishStatus dishStatus) {
+        this.dishStatus = dishStatus;
     }
 
     public Merchant getMerchant() {

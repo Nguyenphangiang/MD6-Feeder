@@ -9,4 +9,5 @@ public interface IMerchantService extends IGeneralService<Merchant> {
      Iterable<Merchant> findMerchantByNameContaining(String name);
      Merchant findMerchantByUser_Id(Long id);
      Merchant findMerchantByUserUsername(String name);
+     Iterable<Merchant> findAllByGoldPartnerTrue ();
 }
