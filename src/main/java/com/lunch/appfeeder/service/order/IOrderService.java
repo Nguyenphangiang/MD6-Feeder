@@ -5,4 +5,5 @@ import com.lunch.appfeeder.service.IGeneralService;
 
 public interface IOrderService extends IGeneralService<Order> {
     void removeAll();
+    Iterable<Order> findAllByDish_Merchant_Id(Long idMerchant);
 }
