@@ -98,7 +98,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/login/**",
                         "/verify",
                         "/register",
-                        "/dish/**"
+                        "/dish/**",
+                        "/order/**",
+                        "/invoice/**"
                         ).permitAll()
                 .antMatchers("/home")
                 .access("hasRole('ROLE_ADMIN')")
