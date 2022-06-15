@@ -10,15 +10,15 @@ import java.util.Optional;
 @Service
 public class InvoiceStatusService implements IInvoiceStatusService {
     @Autowired
-    private IInvoiceStatusRepository orderStatusRepository;
+    private IInvoiceStatusRepository iInvoiceStatusRepository;
 
     public Iterable<InvoiceStatus> findAll() {
-        return orderStatusRepository.findAll();
+        return iInvoiceStatusRepository.findAll();
     }
 
     @Override
     public Optional<InvoiceStatus> findById(Long id) {
-        return Optional.empty();
+        return iInvoiceStatusRepository.findById(id);
     }
 
     @Override
