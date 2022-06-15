@@ -33,26 +33,26 @@ public class Dish {
     private Merchant merchant;
     @ManyToOne
     @JoinColumn(name = "status_id")
-    private DishStatus status;
+    private DishStatus dishStatus;
     public Dish() {
     }
 
-    public Dish(String image, String name, String description, Long price, DishStatus status, Merchant merchant) {
+    public Dish(String image, String name, String description, Long price, DishStatus dishStatus, Merchant merchant) {
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.status = status;
+        this.dishStatus = dishStatus;
         this.merchant = merchant;
     }
 
-    public Dish(Long id, String image, String name, String description, Long price, DishStatus status, Merchant merchant) {
+    public Dish(Long id, String image, String name, String description, Long price, DishStatus dishStatus, Merchant merchant) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.status = status;
+        this.dishStatus = dishStatus;
         this.merchant = merchant;
     }
 
@@ -97,11 +97,11 @@ public class Dish {
     }
 
     public DishStatus getDishStatus() {
-        return status;
+        return dishStatus;
     }
 
     public void setDishStatus(DishStatus status) {
-        this.status = status;
+        this.dishStatus = status;
     }
 
     public Merchant getMerchant() {

@@ -6,10 +6,12 @@ import com.lunch.appfeeder.model.entity.DTO.JwtResponse;
 import com.lunch.appfeeder.model.entity.Customer;
 import com.lunch.appfeeder.model.entity.DTO.SignUpFormCustomer;
 import com.lunch.appfeeder.model.entity.DTO.UserPrincipal;
+import com.lunch.appfeeder.model.entity.address.OrderAddress;
 import com.lunch.appfeeder.model.entity.merchant.Merchant;
 import com.lunch.appfeeder.model.login.AppUser;
 import com.lunch.appfeeder.repository.ICustomerRepository;
 
+import com.lunch.appfeeder.service.address.IOrderAddressService;
 import com.lunch.appfeeder.service.customer.ICustomerService;
 import com.lunch.appfeeder.service.jwt.JwtService;
 import com.lunch.appfeeder.service.merchant.IMerchantService;
@@ -36,6 +38,7 @@ public class AuthController {
     public static final String HTTP_LOCALHOST_4200 = "http://localhost:4200";
     public static final String MERCHANT_BLOCKED = "blocked";
     public static final String MERCHANT_NOT_VERIFIED = "not_verified";
+    public static final String HOME_ADDRESS = "Home";
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -56,6 +59,9 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IOrderAddressService orderAddressService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AppUser appUser) {
@@ -89,6 +95,8 @@ public class AuthController {
         appUserService.save(newUser, getSiteURL(request),user.getEmail(),user.getName());
         Customer customer = new Customer(user.getName(),user.getEmail(),user.getPhone(),user.getAddress(),newUser);
         customerService.save(customer);
+        OrderAddress orderAddress = new OrderAddress(HOME_ADDRESS,user.getAddress(),customer);
+        orderAddressService.save(orderAddress);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
     private String getSiteURL(HttpServletRequest request) {

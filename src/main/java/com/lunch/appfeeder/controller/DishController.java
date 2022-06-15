@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,7 +61,7 @@ public class DishController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Dish dish = new Dish(fileName,dishForm.getName(),dishForm.getDescription(),dishForm.getPrice(),dishForm.getStatus(), merchant.get());
+        Dish dish = new Dish(fileName,dishForm.getName(),dishForm.getDescription(),dishForm.getPrice(),dishForm.getDishStatus(), merchant.get());
         dish.setRecommend(false);
         dishService.save(dish);
         return new ResponseEntity<>(dish,HttpStatus.ACCEPTED);
@@ -96,7 +94,7 @@ public class DishController {
         MultipartFile multipartFile = dishForm.getImage();
         String fileName = multipartFile.getOriginalFilename();
         String fileUpload = env.getProperty("upload.path");
-        Dish existDish = new Dish(id,fileName,dishForm.getName(),dishForm.getDescription(),dishForm.getPrice(),dishForm.getStatus(), merchant.get());
+        Dish existDish = new Dish(id,fileName,dishForm.getName(),dishForm.getDescription(),dishForm.getPrice(),dishForm.getDishStatus(), merchant.get());
         try {
             FileCopyUtils.copy(multipartFile.getBytes(), new File(fileUpload+fileName));
         } catch (IOException e) {
@@ -133,12 +131,12 @@ public class DishController {
     }
     @GetMapping("/recommend/sold")
     public ResponseEntity<Iterable<Dish>> showListSoldDish() {
-        Iterable<Dish> dishes = dishService.findAllByStatusId(STATUS_SOLD);
+        Iterable<Dish> dishes = dishService.findAllByDishStatusId(STATUS_SOLD);
         return new ResponseEntity<>(dishes, HttpStatus.OK);
     }
     @GetMapping("/status/onSale")
     public ResponseEntity<Iterable<Dish>> showListDishOnSale() {
-        Iterable<Dish> dishes = dishService.findAllByStatusId(STATUS_SALE);
+        Iterable<Dish> dishes = dishService.findAllByDishStatusId(STATUS_SALE);
         return new ResponseEntity<>(dishes, HttpStatus.OK);
     }
 

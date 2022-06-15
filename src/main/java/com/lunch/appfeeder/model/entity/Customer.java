@@ -1,8 +1,10 @@
 package com.lunch.appfeeder.model.entity;
 
+import com.lunch.appfeeder.model.entity.address.OrderAddress;
 import com.lunch.appfeeder.model.login.AppUser;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
