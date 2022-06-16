@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,18 +61,23 @@ public class OrderController {
 //        return new ResponseEntity<>(orderList, HttpStatus.OK);
 //    }
 
-    @GetMapping("/merchant/{id}")
-    public ResponseEntity<Iterable<Order>> findOrderByMerchantId(@PathVariable Long id){
-        Iterable<Order> allOrder = orderService.findAll();
-        List<Order> allOrders = (List<Order>) allOrder;
-        List<Order> orderList = new ArrayList<>();
-        for (Order order : allOrders){
-            if (order.getDish().getMerchant().getId().equals(id)){
-                orderList.add(order);
-            }
-        }
-        return new ResponseEntity<>(orderList, HttpStatus.OK);
-    }
+//    @GetMapping("/merchant/{id}")
+//    public ResponseEntity<Iterable<Order>> findOrderByMerchantId(@PathVariable Long id){
+//        Iterable<Order> allOrder = orderService.findAll();
+//        List<Order> allOrders = (List<Order>) allOrder;
+//        List<Order> orderList = new ArrayList<>();
+//        for (Order order : allOrders){
+//            if (order.getDish().getMerchant().getId().equals(id)){
+//                orderList.add(order);
+//            }
+//        }
+//        return new ResponseEntity<>(orderList, HttpStatus.OK);
+//    }
+@GetMapping("/merchant/{idMerchant}")
+public ResponseEntity<Iterable<Order>> findAllOrderByMerchant(@PathVariable Long idMerchant){
+    Iterable<Order> orders = orderService.findAllByDish_Merchant_Id(idMerchant);
+    return new ResponseEntity<>(orders, HttpStatus.OK);
+}
 
 
 
@@ -110,4 +116,4 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-}
+   }

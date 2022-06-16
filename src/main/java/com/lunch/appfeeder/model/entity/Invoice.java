@@ -1,5 +1,7 @@
 package com.lunch.appfeeder.model.entity;
 
+import com.lunch.appfeeder.model.entity.merchant.Merchant;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,40 @@ public class Invoice {
     private InvoiceStatus invoiceStatus;
     @OneToMany
     private List<Order> orders;
+    @ManyToOne
+    @JoinColumn (name = "merchant_id")
+    private Merchant merchant;
+
+    public Invoice(Long id, String note, Date date, Customer customer, InvoiceStatus invoiceStatus, List<Order> orders, Merchant merchant) {
+        this.id = id;
+        this.note = note;
+        this.date = date;
+        this.customer = customer;
+        this.invoiceStatus = invoiceStatus;
+        this.orders = orders;
+        this.merchant = merchant;
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
+    }
+
+    public Invoice(String note, Date date, Customer customer, InvoiceStatus invoiceStatus, List<Order> orders, Merchant merchant) {
+        this.note = note;
+        this.date = date;
+        this.customer = customer;
+        this.invoiceStatus = invoiceStatus;
+        this.orders = orders;
+        this.merchant = merchant;
+    }
+
+    public Invoice(List<Order> orders) {
+        this.orders = orders;
+    }
 
     public Long getId() {
         return id;

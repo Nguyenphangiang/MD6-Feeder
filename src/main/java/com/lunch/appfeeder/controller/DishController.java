@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -118,6 +120,13 @@ public class DishController {
     public ResponseEntity<Iterable<Dish>> findDishByName(@PathVariable String dishName) {
         Iterable<Dish> dishes = dishService.findDishByNameContaining(dishName);
         return new ResponseEntity<>(dishes, HttpStatus.OK);
+    }
+    @GetMapping("/recommend/{idDish}")
+    public ResponseEntity<Dish> addDishRecommend(@PathVariable Long idDish) {
+        Dish oldDish = dishService.findById(idDish).get();
+        oldDish.setRecommend(true);
+        dishService.save(oldDish);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/recommend/sale")
     public ResponseEntity<Iterable<Dish>> showListDishRecommend() {

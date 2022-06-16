@@ -5,6 +5,7 @@ import com.lunch.appfeeder.repository.IInvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -22,6 +23,7 @@ public class InvoiceService implements IInvoiceService {
     }
 
     @Override
+    @Transactional
     public Invoice save(Invoice invoice) {
         return iInvoiceRepository.save( invoice);
     }
@@ -34,5 +36,10 @@ public class InvoiceService implements IInvoiceService {
     @Override
     public Iterable<Invoice> findAllByCustomer_Id(Long idCustomer) {
         return iInvoiceRepository.findAllByCustomer_Id(idCustomer);
+    }
+
+    @Override
+    public Iterable<Invoice> findAllByMerchant_Id(Long idMerchant) {
+        return iInvoiceRepository.findAllByMerchantId(idMerchant);
     }
 }

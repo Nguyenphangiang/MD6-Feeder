@@ -36,4 +36,9 @@ public class OrderService implements IOrderService{
     public void removeAll(){
         orderRepository.deleteAll();
     }
+
+    @Override
+    public Iterable<Order> findAllByDish_Merchant_Id(Long idMerchant) {
+       return orderRepository.findAllByDish_Merchant_Id(idMerchant);
+    }
 }
