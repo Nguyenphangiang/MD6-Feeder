@@ -58,6 +58,14 @@ public class InvoiceController {
         invoice.setId(id);
         return new ResponseEntity<>(iInvoiceService.save(invoice), HttpStatus.OK);
     }
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Invoice> updateStatus(@PathVariable Long id,@Param("id") String idStatus) {
+        Invoice invoice = iInvoiceService.findById(id).get();
+        InvoiceStatus status = new InvoiceStatus();
+        status.setId(Long.parseLong(idStatus));
+        invoice.setInvoiceStatus(status);
+        return new ResponseEntity<>(invoice, HttpStatus.OK);
+    }
     @GetMapping("/customer-name")
     public ResponseEntity<Iterable<Invoice>> findAllByCustomerName(@Param("name") String name) {
         Iterable<Invoice> invoices = iInvoiceService.findAllByCustomer_Name("%"+name+"%");
