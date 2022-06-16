@@ -24,16 +24,8 @@ public class Invoice {
     @ManyToOne
     @JoinColumn (name = "merchant_id")
     private Merchant merchant;
+    private String orderAdress;
 
-    public Invoice(Long id, String note, Date date, Customer customer, InvoiceStatus invoiceStatus, List<Order> orders, Merchant merchant) {
-        this.id = id;
-        this.note = note;
-        this.date = date;
-        this.customer = customer;
-        this.invoiceStatus = invoiceStatus;
-        this.orders = orders;
-        this.merchant = merchant;
-    }
 
     public Merchant getMerchant() {
         return merchant;
@@ -43,14 +35,7 @@ public class Invoice {
         this.merchant = merchant;
     }
 
-    public Invoice(String note, Date date, Customer customer, InvoiceStatus invoiceStatus, List<Order> orders, Merchant merchant) {
-        this.note = note;
-        this.date = date;
-        this.customer = customer;
-        this.invoiceStatus = invoiceStatus;
-        this.orders = orders;
-        this.merchant = merchant;
-    }
+
 
     public Invoice(List<Order> orders) {
         this.orders = orders;
@@ -68,25 +53,37 @@ public class Invoice {
         return orders;
     }
 
+    public String getOrderAdress() {
+        return orderAdress;
+    }
+
+    public void setOrderAdress(String orderAdress) {
+        this.orderAdress = orderAdress;
+    }
+
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
-    public Invoice(String note, Date date, Customer customer, InvoiceStatus invoiceStatus, List<Order> orders) {
+    public Invoice(String note, Date date, Customer customer, InvoiceStatus invoiceStatus, List<Order> orders, Merchant merchant, String orderAdress) {
         this.note = note;
         this.date = date;
         this.customer = customer;
         this.invoiceStatus = invoiceStatus;
         this.orders = orders;
+        this.merchant = merchant;
+        this.orderAdress = orderAdress;
     }
 
-    public Invoice(Long id, String note, Date date, Customer customer, InvoiceStatus invoiceStatus, List<Order> orders) {
+    public Invoice(Long id, String note, Date date, Customer customer, InvoiceStatus invoiceStatus, List<Order> orders, Merchant merchant, String orderAdress) {
         this.id = id;
         this.note = note;
         this.date = date;
         this.customer = customer;
         this.invoiceStatus = invoiceStatus;
         this.orders = orders;
+        this.merchant = merchant;
+        this.orderAdress = orderAdress;
     }
 
     public String getNote() {

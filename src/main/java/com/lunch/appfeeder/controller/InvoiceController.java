@@ -20,6 +20,7 @@ import java.util.Optional;
 @RequestMapping("/invoice")
 public class InvoiceController {
     public static final long DEFAULT_STATUS = 1L;
+    public static final long RECEIVED_STATUS = 2L;
     @Autowired
     private IInvoiceService iInvoiceService;
     @Autowired
@@ -37,7 +38,7 @@ public class InvoiceController {
     public ResponseEntity<Invoice> createNewInvoice(@RequestBody Invoice invoice, @PathVariable Long idCustomer) {
         Optional<Customer> customer = customerService.findById(idCustomer);
         Optional<InvoiceStatus> invoiceStatus = invoiceStatusService.findById(DEFAULT_STATUS);
-        Invoice invoice1 = new Invoice(invoice.getNote(),new Date(),customer.get(),invoiceStatus.get(),invoice.getOrders(),invoice.getMerchant());
+        Invoice invoice1 = new Invoice(invoice.getNote(),new Date(),customer.get(),invoiceStatus.get(),invoice.getOrders(),invoice.getMerchant(),invoice.getOrderAdress());
 //        invoice.setDate(new Date());
         return new ResponseEntity<>(iInvoiceService.save(invoice1), HttpStatus.CREATED);
     }
@@ -56,5 +57,17 @@ public class InvoiceController {
     public ResponseEntity<Invoice> updateInvoice(@PathVariable Long id,@RequestBody Invoice invoice) {
         invoice.setId(id);
         return new ResponseEntity<>(iInvoiceService.save(invoice), HttpStatus.OK);
+    }
+    @PutMapping("/{id}/{idCustomer}")
+    public ResponseEntity<Invoice> updateInvoiceToBuy(@RequestBody Invoice invoice , @PathVariable Long id , @PathVariable Long idCustomer){
+        Optional<Customer> customer = customerService.findById(idCustomer);
+        Optional<InvoiceStatus> invoiceStatus = invoiceStatusService.findById(RECEIVED_STATUS);
+        Invoice invoice1 = new Invoice(id ,invoice.getNote(),new Date(),customer.get(),invoiceStatus.get(),invoice.getOrders(),invoice.getMerchant(),invoice.getOrderAdress());
+        return new ResponseEntity<>(iInvoiceService.save(invoice1),HttpStatus.OK);
+    }
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<Iterable<Invoice>> showAllInvoice(@PathVariable Long id) {
+        Iterable<Invoice> invoices = iInvoiceService.findAllByCustomer_Id(id);
+        return new ResponseEntity<>(invoices, HttpStatus.OK);
     }
 }
