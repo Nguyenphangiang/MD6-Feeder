@@ -8,4 +8,5 @@ public interface IInvoiceService extends IGeneralService<Invoice> {
     Iterable<Invoice> findAllByMerchant_Id(Long idMerchant);
     Iterable<Invoice> findAllByCustomer_Name(String name);
     Iterable<Invoice> findAllByCustomer_Phone(String phone);
+    Iterable<Invoice> findAllByCustomer_NameOrPhone(String input);
 }

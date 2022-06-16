@@ -68,4 +68,9 @@ public class InvoiceController {
         Iterable<Invoice> invoices = iInvoiceService.findAllByCustomer_Phone("%"+phone+"%");
         return new ResponseEntity<>(invoices, HttpStatus.OK);
     }
+    @GetMapping("/customerInfo")
+    public ResponseEntity<Iterable<Invoice>> findAllByCustomerNameOrPhone(@Param("input") String input) {
+        Iterable<Invoice> invoices = iInvoiceService.findAllByCustomer_NameOrPhone("%"+input+"%");
+        return new ResponseEntity<>(invoices, HttpStatus.OK);
+    }
 }

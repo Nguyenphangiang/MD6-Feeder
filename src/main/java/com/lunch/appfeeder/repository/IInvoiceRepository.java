@@ -14,5 +14,6 @@ public interface IInvoiceRepository extends JpaRepository<Invoice,Long> {
     Iterable<Invoice> findAllByCustomer_Name(String name);
     @Query(value = "select * from invoices i left join customers c on c.id = i.customer_id where c.phone like ?1",nativeQuery = true)
     Iterable<Invoice> findAllByCustomer_Phone(String phone);
-
+    @Query(value = "select * from invoices i left join customers c on c.id = i.customer_id where c.name like ?1 or c.phone like ?1",nativeQuery = true)
+    Iterable<Invoice> findAllByCustomer_NameOrPhone(String input);
 }

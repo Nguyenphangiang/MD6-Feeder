@@ -49,6 +49,11 @@ public class InvoiceService implements IInvoiceService {
     }
 
     @Override
+    public Iterable<Invoice> findAllByCustomer_NameOrPhone(String input) {
+        return iInvoiceRepository.findAllByCustomer_NameOrPhone(input);
+    }
+
+    @Override
     public Iterable<Invoice> findAllByMerchant_Id(Long idMerchant) {
         return iInvoiceRepository.findAllByMerchantId(idMerchant);
     }
