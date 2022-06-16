@@ -37,4 +37,9 @@ public class InvoiceService implements IInvoiceService {
     public Iterable<Invoice> findAllByCustomer_Id(Long idCustomer) {
         return iInvoiceRepository.findAllByCustomer_Id(idCustomer);
     }
+
+    @Override
+    public Iterable<Invoice> findAllByMerchant_Id(Long idMerchant) {
+        return iInvoiceRepository.findAllByMerchantId(idMerchant);
+    }
 }

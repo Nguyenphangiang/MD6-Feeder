@@ -47,4 +47,14 @@ public class InvoiceController {
         Optional<Invoice> invoice = iInvoiceService.findById(id);
         return new ResponseEntity<>(invoice.get(), HttpStatus.OK);
     }
+    @GetMapping("/merchant/{id}")
+    public ResponseEntity<Iterable<Invoice>> findAllByMerchantId(@PathVariable Long id) {
+        Iterable<Invoice> invoices = iInvoiceService.findAllByMerchant_Id(id);
+        return new ResponseEntity<>(invoices, HttpStatus.OK);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Invoice> updateInvoice(@PathVariable Long id,@RequestBody Invoice invoice) {
+        invoice.setId(id);
+        return new ResponseEntity<>(iInvoiceService.save(invoice), HttpStatus.OK);
+    }
 }
