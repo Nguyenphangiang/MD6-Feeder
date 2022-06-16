@@ -7,6 +7,7 @@ import com.lunch.appfeeder.service.customer.ICustomerService;
 import com.lunch.appfeeder.service.invoice.IInvoiceService;
 import com.lunch.appfeeder.service.invoicestatus.IInvoiceStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -56,5 +57,15 @@ public class InvoiceController {
     public ResponseEntity<Invoice> updateInvoice(@PathVariable Long id,@RequestBody Invoice invoice) {
         invoice.setId(id);
         return new ResponseEntity<>(iInvoiceService.save(invoice), HttpStatus.OK);
+    }
+    @GetMapping("/customer-name")
+    public ResponseEntity<Iterable<Invoice>> findAllByCustomerName(@Param("name") String name) {
+        Iterable<Invoice> invoices = iInvoiceService.findAllByCustomer_Name("%"+name+"%");
+        return new ResponseEntity<>(invoices, HttpStatus.OK);
+    }
+    @GetMapping("/customer-phone")
+    public ResponseEntity<Iterable<Invoice>> findAllByCustomerPhone(@Param("phone") String phone) {
+        Iterable<Invoice> invoices = iInvoiceService.findAllByCustomer_Phone("%"+phone+"%");
+        return new ResponseEntity<>(invoices, HttpStatus.OK);
     }
 }
