@@ -1,5 +1,6 @@
 package com.lunch.appfeeder.controller;
 
+import com.lunch.appfeeder.model.entity.CartElement;
 import com.lunch.appfeeder.model.entity.Order;
 import com.lunch.appfeeder.service.cartelement.ICartElementService;
 import com.lunch.appfeeder.service.invoice.IInvoiceService;
@@ -29,19 +30,19 @@ public class OrderController {
 
 
     @GetMapping
-    public ResponseEntity<Iterable<Order>> findAllOrder(){
+    public ResponseEntity<Iterable<Order>> findAllOrder() {
         Iterable<Order> orders = orderService.findAll();
         List<Order> orderList = (List<Order>) orders;
-        if (orderList.isEmpty()){
+        if (orderList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public  ResponseEntity<Optional<Order>> findOrderById(@PathVariable Long id){
+    public ResponseEntity<Optional<Order>> findOrderById(@PathVariable Long id) {
         Optional<Order> order = orderService.findById(id);
-        if (!order.isPresent()){
+        if (!order.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(order, HttpStatus.OK);
@@ -61,12 +62,12 @@ public class OrderController {
 //    }
 
     @GetMapping("/merchant/{id}")
-    public ResponseEntity<Iterable<Order>> findOrderByMerchantId(@PathVariable Long id){
+    public ResponseEntity<Iterable<Order>> findOrderByMerchantId(@PathVariable Long id) {
         Iterable<Order> allOrder = orderService.findAll();
         List<Order> allOrders = (List<Order>) allOrder;
         List<Order> orderList = new ArrayList<>();
-        for (Order order : allOrders){
-            if (order.getDish().getMerchant().getId().equals(id)){
+        for (Order order : allOrders) {
+            if (order.getDish().getMerchant().getId().equals(id)) {
                 orderList.add(order);
             }
         }
@@ -74,29 +75,35 @@ public class OrderController {
     }
 
 
+    @GetMapping("/ordercheck/{customerId}")
+    public ResponseEntity<Iterable<Order>> findAllByCustomerIdAndCheckFalse(@PathVariable Long customerId) {
+        return new ResponseEntity<>(orderService.findAllByOrderCheckFalseAndCustomer_Id(customerId), HttpStatus.OK);
+    }
 
     @PostMapping()
-    public ResponseEntity<Order> createNewOrder(@RequestBody Order order){
+    public ResponseEntity<Order> createNewOrder(@RequestBody Order order) {
+        order.setOrderCheck(false);
         orderService.save(order);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Order> updateOrderInfo(@PathVariable Long id, @RequestBody Order order){
+    @PutMapping("/setstatus/{id}")
+    public ResponseEntity<Order> updateOrderInfo(@PathVariable Long id, @RequestBody Order order) {
         Optional<Order> originalOrder = orderService.findById(id);
-        if (!originalOrder.isPresent()){
+        if (!originalOrder.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         order.setId(originalOrder.get().getId());
+        order.setOrderCheck(true);
         orderService.save(order);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Order> removeOrder(@PathVariable Long id){
+    public ResponseEntity<Order> removeOrder(@PathVariable Long id) {
         Optional<Order> order = orderService.findById(id);
-        if (!order.isPresent()){
+        if (!order.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         orderService.remove(id);
@@ -104,10 +111,33 @@ public class OrderController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Iterable<Order>> removeAllOrder(){
+    public ResponseEntity<Iterable<Order>> removeAllOrder() {
         Iterable<Order> orders = orderService.findAll();
         orderService.removeAll();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
-
+    @PutMapping("/reduce/{id}")
+    public ResponseEntity<Order> reduceQuantityOfOrderElement(@PathVariable Long id) {
+        Optional<Order> order = orderService.findById(id);
+        Order order1 = new Order(order.get().getDish(),order.get().getQuantity()-1,order.get().isOrderCheck(),order.get().getCustomer());
+        order1.setId(id);
+        if (order.isPresent()) {
+            orderService.save(order1);
+            return new ResponseEntity<>(order1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/increase/{id}")
+    public ResponseEntity<CartElement> increaseQuantityOfCartElement(@PathVariable Long id) {
+        Optional<Order> order = orderService.findById(id);
+        Order order1 = new Order(order.get().getDish(),order.get().getQuantity()+1,order.get().isOrderCheck(),order.get().getCustomer());
+        order1.setId(id);
+        if (order.isPresent()) {
+            orderService.save(order1);
+            return new ResponseEntity<>( HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

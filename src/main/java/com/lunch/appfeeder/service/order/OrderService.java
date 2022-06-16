@@ -33,6 +33,11 @@ public class OrderService implements IOrderService{
     }
 
     @Override
+    public Iterable<Order> findAllByOrderCheckFalseAndCustomer_Id(Long customerId) {
+        return orderRepository.findAllByOrderCheckFalseAndCustomer_Id(customerId);
+    }
+
+    @Override
     public void removeAll(){
         orderRepository.deleteAll();
     }

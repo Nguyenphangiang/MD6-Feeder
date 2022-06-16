@@ -19,7 +19,7 @@ public class Invoice {
     private Customer customer;
     @OneToOne
     private InvoiceStatus invoiceStatus;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Order> orders;
     @ManyToOne
     @JoinColumn (name = "merchant_id")

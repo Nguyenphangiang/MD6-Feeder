@@ -20,6 +20,7 @@ import java.util.Optional;
 @RequestMapping("/invoice")
 public class InvoiceController {
     public static final long DEFAULT_STATUS = 1L;
+    public static final long RECEIVED_STATUS = 2L;
     @Autowired
     private IInvoiceService iInvoiceService;
     @Autowired
@@ -46,5 +47,12 @@ public class InvoiceController {
     public ResponseEntity<Invoice> findById(@PathVariable Long id) {
         Optional<Invoice> invoice = iInvoiceService.findById(id);
         return new ResponseEntity<>(invoice.get(), HttpStatus.OK);
+    }
+    @PutMapping("/{id}/{idCustomer}")
+    public ResponseEntity<Invoice> updateInvoiceToBuy(@RequestBody Invoice invoice , @PathVariable Long id , @PathVariable Long idCustomer){
+        Optional<Customer> customer = customerService.findById(idCustomer);
+        Optional<InvoiceStatus> invoiceStatus = invoiceStatusService.findById(RECEIVED_STATUS);
+        Invoice invoice1 = new Invoice(id ,invoice.getNote(),new Date(),customer.get(),invoiceStatus.get(),invoice.getOrders(),invoice.getMerchant());
+        return new ResponseEntity<>(iInvoiceService.save(invoice1),HttpStatus.OK);
     }
 }
