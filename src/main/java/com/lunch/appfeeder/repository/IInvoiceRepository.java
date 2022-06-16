@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IInvoiceRepository extends JpaRepository<Invoice,Long> {
     Iterable<Invoice> findAllByCustomer_Id(Long idCustomer);
+    Iterable<Invoice> findAllByMerchantId(Long idMerchant);
+    Invoice findByInvoiceStatus_Id(Long id);
 }

@@ -1,10 +1,13 @@
 package com.lunch.appfeeder.service.merchant;
 
+import com.lunch.appfeeder.model.entity.DTO.IMerchantSaleAmount;
 import com.lunch.appfeeder.model.entity.merchant.Merchant;
 import com.lunch.appfeeder.model.entity.merchant.MerchantStatus;
 import com.lunch.appfeeder.repository.merchant.IMerchantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -51,6 +54,21 @@ public class MerchantService implements IMerchantService {
     @Override
     public Iterable<Merchant> findAllByGoldPartnerTrue() {
         return merchantRepository.findAllByGoldPartnerTrue();
+    }
+
+    @Override
+    public Iterable<IMerchantSaleAmount> getMerchantSaleAmountByYear(int year) {
+        return merchantRepository.getMerchantSaleAmountByYear(year);
+    }
+
+    @Override
+    public Iterable<IMerchantSaleAmount> getMerchantSaleAmountByQuarter(int quarter) {
+        return merchantRepository.getMerchantSaleAmountByQuarter(quarter);
+    }
+
+    @Override
+    public Iterable<IMerchantSaleAmount> getMerchantSaleAmountByMonth(int month) {
+        return merchantRepository.getMerchantSaleAmountByMonth(month);
     }
 
     @Override

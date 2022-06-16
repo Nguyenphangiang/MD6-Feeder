@@ -1,5 +1,6 @@
 package com.lunch.appfeeder.controller;
 
+import com.lunch.appfeeder.model.entity.DTO.IMerchantSaleAmount;
 import com.lunch.appfeeder.model.entity.DTO.MerchantForm;
 import com.lunch.appfeeder.model.entity.DTO.MerchantWithStatus;
 import com.lunch.appfeeder.model.entity.DTO.SignUpFormMerchant;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -138,5 +140,20 @@ public class MerchantController {
     public ResponseEntity<Iterable<Merchant>> showListGoldMerchant() {
         Iterable<Merchant> merchants = merchantService.findAllByGoldPartnerTrue();
         return new ResponseEntity<>(merchants, HttpStatus.OK);
+    }
+    @GetMapping("/sale/amount/{year}")
+    public ResponseEntity<Iterable<IMerchantSaleAmount>> showSaleAmount(@PathVariable int year) {
+        Iterable<IMerchantSaleAmount> iMerchantSaleAmounts = merchantService.getMerchantSaleAmountByYear(year);
+        return new ResponseEntity<>(iMerchantSaleAmounts, HttpStatus.OK);
+    }
+    @GetMapping("sale/amount/month/{month}")
+    public ResponseEntity<Iterable<IMerchantSaleAmount>> showSaleAmountByMonth(@PathVariable int month) {
+        Iterable<IMerchantSaleAmount> iMerchantSaleAmount = merchantService.getMerchantSaleAmountByMonth(month);
+        return new ResponseEntity<>(iMerchantSaleAmount,HttpStatus.OK);
+    }
+    @GetMapping("sale/amount/quarter/{quarter}")
+    public ResponseEntity<Iterable<IMerchantSaleAmount>> showSaleAmountByQuarter(@PathVariable int quarter) {
+        Iterable<IMerchantSaleAmount> iMerchantSaleAmount = merchantService.getMerchantSaleAmountByQuarter(quarter);
+        return new ResponseEntity<>(iMerchantSaleAmount, HttpStatus.OK);
     }
 }
