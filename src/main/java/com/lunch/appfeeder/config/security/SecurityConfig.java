@@ -101,9 +101,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/dish/**",
                         "/order/**",
                         "/invoice/**",
-                        "/admin/**"
+                        "/orderAddress/**"
                         ).permitAll()
-                .antMatchers("/")
+                .antMatchers("/admin/**")
                 .access("hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and().csrf().disable();

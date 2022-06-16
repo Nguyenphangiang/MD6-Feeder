@@ -25,6 +25,12 @@ public class OrderAddressController {
     public ResponseEntity<Iterable<OrderAddress>> showAllOrderAddress(@PathVariable Long idCustomer) {
         return new ResponseEntity<>(orderAddressService.findAllByCustomer_Id(idCustomer), HttpStatus.OK);
     }
+    @GetMapping("old/{id}")
+    public ResponseEntity<OrderAddress> findOneOrderAddress(@PathVariable Long id) {
+        Optional<OrderAddress> orderAddress = orderAddressService.findById(id);
+        return new ResponseEntity<>(orderAddress.get(), HttpStatus.OK);
+    }
+
     @PostMapping("{idCustomer}")
     public ResponseEntity<OrderAddress> addNewOrderAddress(@RequestBody OrderAddress orderAddress, @PathVariable Long idCustomer) {
         Optional<Customer> customer = customerService.findById(idCustomer);

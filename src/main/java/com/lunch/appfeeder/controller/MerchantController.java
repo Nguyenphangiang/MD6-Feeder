@@ -7,6 +7,7 @@ import com.lunch.appfeeder.model.entity.Dish;
 import com.lunch.appfeeder.model.entity.merchant.Merchant;
 import com.lunch.appfeeder.model.entity.merchant.MerchantStatus;
 import com.lunch.appfeeder.model.login.AppUser;
+import com.lunch.appfeeder.service.dish.IDishService;
 import com.lunch.appfeeder.service.merchant.IMerchantService;
 import com.lunch.appfeeder.service.user.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,8 @@ public class MerchantController {
     public static final long NOT_VERIFIED = 2L;
     @Value("${upload.path}")
     String uploadPath;
-
+    @Autowired
+    private IDishService dishService;
     @Autowired
     private IAppUserService appUserService;
     @Autowired
@@ -132,5 +134,9 @@ public class MerchantController {
         Merchant merchant = merchantService.findMerchantByUser_Id(userId);
         return new ResponseEntity<>(merchant, HttpStatus.OK);
     }
-
+    @GetMapping("/goldPartner")
+    public ResponseEntity<Iterable<Merchant>> showListGoldMerchant() {
+        Iterable<Merchant> merchants = merchantService.findAllByGoldPartnerTrue();
+        return new ResponseEntity<>(merchants, HttpStatus.OK);
+    }
 }
