@@ -38,7 +38,7 @@ public class InvoiceController {
     public ResponseEntity<Invoice> createNewInvoice(@RequestBody Invoice invoice, @PathVariable Long idCustomer) {
         Optional<Customer> customer = customerService.findById(idCustomer);
         Optional<InvoiceStatus> invoiceStatus = invoiceStatusService.findById(DEFAULT_STATUS);
-        Invoice invoice1 = new Invoice(invoice.getNote(),new Date(),customer.get(),invoiceStatus.get(),invoice.getOrders(),invoice.getMerchant());
+        Invoice invoice1 = new Invoice(invoice.getNote(),new Date(),customer.get(),invoiceStatus.get(),invoice.getOrders(),invoice.getMerchant(),invoice.getOrderAdress());
 //        invoice.setDate(new Date());
         return new ResponseEntity<>(iInvoiceService.save(invoice1), HttpStatus.CREATED);
     }
@@ -52,7 +52,7 @@ public class InvoiceController {
     public ResponseEntity<Invoice> updateInvoiceToBuy(@RequestBody Invoice invoice , @PathVariable Long id , @PathVariable Long idCustomer){
         Optional<Customer> customer = customerService.findById(idCustomer);
         Optional<InvoiceStatus> invoiceStatus = invoiceStatusService.findById(RECEIVED_STATUS);
-        Invoice invoice1 = new Invoice(id ,invoice.getNote(),new Date(),customer.get(),invoiceStatus.get(),invoice.getOrders(),invoice.getMerchant());
+        Invoice invoice1 = new Invoice(id ,invoice.getNote(),new Date(),customer.get(),invoiceStatus.get(),invoice.getOrders(),invoice.getMerchant(),invoice.getOrderAdress());
         return new ResponseEntity<>(iInvoiceService.save(invoice1),HttpStatus.OK);
     }
 }

@@ -5,6 +5,7 @@ import com.lunch.appfeeder.repository.orderRepository.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -40,5 +41,11 @@ public class OrderService implements IOrderService{
     @Override
     public void removeAll(){
         orderRepository.deleteAll();
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllByOrOrderCheckFalseAndCustomer_Id(Long customerId) {
+        orderRepository.deleteAllByOrOrderCheckFalseAndCustomer_Id(customerId);
     }
 }

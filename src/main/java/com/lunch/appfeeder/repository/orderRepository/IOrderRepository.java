@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IOrderRepository extends CrudRepository<Order, Long> {
     Iterable<Order> findAllByOrderCheckFalseAndCustomer_Id (Long idCustomer);
+    void deleteAllByOrOrderCheckFalseAndCustomer_Id(Long idCustomer);
 }

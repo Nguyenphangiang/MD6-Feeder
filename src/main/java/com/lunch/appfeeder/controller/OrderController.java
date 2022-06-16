@@ -79,6 +79,11 @@ public class OrderController {
     public ResponseEntity<Iterable<Order>> findAllByCustomerIdAndCheckFalse(@PathVariable Long customerId) {
         return new ResponseEntity<>(orderService.findAllByOrderCheckFalseAndCustomer_Id(customerId), HttpStatus.OK);
     }
+ @DeleteMapping("/ordercheck/{customerId}")
+    public ResponseEntity<Iterable<Order>> deleteAllByOrOrderCheckFalse(@PathVariable Long customerId) {
+     orderService.deleteAllByOrOrderCheckFalseAndCustomer_Id(customerId);
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
 
     @PostMapping()
     public ResponseEntity<Order> createNewOrder(@RequestBody Order order) {
@@ -94,8 +99,8 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         order.setId(originalOrder.get().getId());
-        order.setOrderCheck(true);
-        orderService.save(order);
+        originalOrder.get().setOrderCheck(true);
+        orderService.save(originalOrder.get());
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
